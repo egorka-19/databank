@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main"
+        android:icon="@drawable/korzina"
+        android:title="Главная" />
+
+    <item
+        android:id="@+id/chats"
+        android:icon="@drawable/message"
+        android:title="Чат" />
+
+    <item
+        android:id="@+id/like"
+        android:icon="@drawable/like"
+        android:title="Избранное" />
+
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/profil"
+        android:title="Профиль" />
+
+</menu>
+
+

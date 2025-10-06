@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/main"
+        android:icon="@drawable/korzina"
+        android:title="Метрика" />
+    <item
+        android:id="@+id/category"
+        android:icon="@drawable/loopa"
+        android:title="Добавить" />
+    <item
+        android:id="@+id/profile"
+        android:icon="@drawable/profil"
+        android:title="Профиль" />
+
+</menu>

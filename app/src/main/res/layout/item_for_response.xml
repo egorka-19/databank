@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="10dp">
+
+    <TextView
+        android:id="@+id/title_rating"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Общее впечатление"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+    <!-- SeekBar 1 -->
+    <RatingBar
+        android:id="@+id/ratingBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"
+        android:numStars="5"
+        android:rating="0"
+        android:stepSize="1" />
+
+    <TextView
+        android:id="@+id/seekbar1_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SeekBar 1"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <SeekBar
+        android:id="@+id/seekBar1"
+        android:max="4"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"/>
+
+    <!-- SeekBar 2 -->
+    <TextView
+        android:id="@+id/seekbar2_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SeekBar 2" />
+
+    <SeekBar
+        android:id="@+id/seekBar2"
+        android:max="4"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"/>
+
+    <!-- SeekBar 3 -->
+    <TextView
+        android:id="@+id/seekbar3_title"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="SeekBar 3"
+        />
+
+    <SeekBar
+        android:id="@+id/seekBar3"
+        android:max="4"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="26dp"/>
+
+    <!-- Switch -->
+    <ImageButton
+        android:id="@+id/qr_code"
+        android:layout_width="326dp"
+        android:layout_height="141dp"
+        android:backgroundTint="@android:color/transparent"
+        android:scaleType="fitCenter"
+        tools:srcCompat="@drawable/qr_code"
+        android:layout_marginBottom="10dp" />
+
+    <Switch
+        android:id="@+id/switch_element"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20sp"
+        android:text="Рекомендую этот товар"
+        android:layout_marginBottom="15dp"/>
+
+    <!-- Button -->
+    <ImageButton
+        android:id="@+id/send_btn"
+        android:src="@drawable/but_send"
+        android:scaleType="fitCenter"
+        android:backgroundTint="@android:color/transparent"
+        android:layout_width="wrap_content"
+        android:layout_height="100dp" />
+
+</LinearLayout>

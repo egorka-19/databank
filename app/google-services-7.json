@@ -1,0 +1,106 @@
+{
+  "project_info": {
+    "project_number": "549897177718",
+    "firebase_url": "https://swipe-hatoms-default-rtdb.firebaseio.com",
+    "project_id": "swipe-hatoms",
+    "storage_bucket": "swipe-hatoms.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549897177718:android:27f2b06196660d405e6d57",
+        "android_client_info": {
+          "package_name": "com.example.comicapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKIh7tjsonEQPsi4SU8HbYofNTbK8m9pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549897177718:android:08edb49638c1f1df5e6d57",
+        "android_client_info": {
+          "package_name": "com.example.comics"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKIh7tjsonEQPsi4SU8HbYofNTbK8m9pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549897177718:android:604780f5b940f4295e6d57",
+        "android_client_info": {
+          "package_name": "com.example.databank"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKIh7tjsonEQPsi4SU8HbYofNTbK8m9pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549897177718:android:d072aa7e0bcc53a15e6d57",
+        "android_client_info": {
+          "package_name": "com.example.pick_me"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKIh7tjsonEQPsi4SU8HbYofNTbK8m9pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:549897177718:android:52e643f414b340b95e6d57",
+        "android_client_info": {
+          "package_name": "com.example.swipe_hatoms"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDKIh7tjsonEQPsi4SU8HbYofNTbK8m9pk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
