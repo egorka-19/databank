@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".UI.Admin.bottomnav.Metrika.MetrikaFragment">
+
+    <ImageButton
+        android:id="@+id/electronic_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="40dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/electronics"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/technics_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/technics"
+        app:layout_constraintEnd_toStartOf="@+id/sport_btn"
+        app:layout_constraintStart_toEndOf="@+id/electronic_btn"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/sport_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/sport_category"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageButton
+        android:id="@+id/clothes_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/clothes_and_sneakers"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/electronic_btn" />
+
+    <ImageButton
+        android:id="@+id/creative_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/creative"
+        app:layout_constraintEnd_toStartOf="@+id/home_btn"
+        app:layout_constraintStart_toEndOf="@+id/clothes_btn"
+        app:layout_constraintTop_toBottomOf="@+id/technics_btn" />
+
+    <ImageButton
+        android:id="@+id/home_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="25dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/home"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/sport_btn" />
+
+    <ImageButton
+        android:id="@+id/kids_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/kids"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/clothes_btn" />
+
+    <ImageButton
+        android:id="@+id/health_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="21dp"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/health"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/kids_btn" />
+
+    <ImageButton
+        android:id="@+id/auto_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/auto"
+        app:layout_constraintEnd_toStartOf="@+id/build_btn"
+        app:layout_constraintStart_toEndOf="@+id/health_btn"
+        app:layout_constraintTop_toBottomOf="@+id/beauty_btn" />
+
+    <ImageButton
+        android:id="@+id/build_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="21dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/build"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/book_btn" />
+
+    <ImageButton
+        android:id="@+id/beauty_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="10dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/beauty"
+        app:layout_constraintEnd_toStartOf="@+id/book_btn"
+        app:layout_constraintStart_toEndOf="@+id/kids_btn"
+        app:layout_constraintTop_toBottomOf="@+id/creative_btn" />
+
+    <ImageButton
+        android:id="@+id/book_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="21dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription=""
+        android:src="@drawable/book"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/home_btn" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
