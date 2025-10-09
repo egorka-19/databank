@@ -100,7 +100,6 @@ public class ViewAllAdapters extends RecyclerView.Adapter<ViewAllAdapters.ViewHo
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             popImg = itemView.findViewById(R.id.pop_img);
-            favoriteIcon = itemView.findViewById(R.id.favorite_icon);
             popName = itemView.findViewById(R.id.pop_name);
             itemDescription = itemView.findViewById(R.id.item_description);
         }

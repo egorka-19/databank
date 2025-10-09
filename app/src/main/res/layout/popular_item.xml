@@ -16,27 +16,19 @@
         android:layout_height="wrap_content"
         android:padding="8dp">
 
-        <!-- Картинка товара с закруглёнными углами -->
+        <!-- Картинка слева 1:1, во всю высоту карточки -->
         <com.makeramen.roundedimageview.RoundedImageView
             android:id="@+id/pop_img"
-            android:layout_width="350dp"
-            android:layout_height="120dp"
-            android:src="@drawable/izo"
+            android:layout_width="116dp"
+            android:layout_height="136dp"
             android:scaleType="centerCrop"
-            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/izo"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintDimensionRatio="1:1"
+            app:layout_constraintEnd_toStartOf="@id/pop_name"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
             app:riv_corner_radius="14dp" />
-
-        <!-- Сердечко в правом верхнем углу -->
-        <ImageView
-            android:id="@+id/favorite_icon"
-            android:layout_width="24dp"
-            android:layout_height="24dp"
-            android:layout_margin="8dp"
-            android:src="@drawable/health"
-            app:layout_constraintTop_toTopOf="@id/pop_img"
-            app:layout_constraintEnd_toEndOf="@id/pop_img" />
 
         <!-- Название и рейтинг -->
         <TextView
@@ -48,8 +40,9 @@
             android:text="Название события"
             android:textSize="21sp"
             android:textStyle="bold"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pop_img" />
+            app:layout_constraintStart_toEndOf="@id/pop_img"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toStartOf="@id/address_button" />
 
         <!-- Краткая информация -->
         <TextView
@@ -63,24 +56,37 @@
             android:textSize="16sp"
             android:maxLines="3"
             app:layout_constraintTop_toBottomOf="@id/pop_name"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintStart_toEndOf="@id/pop_img"
+            app:layout_constraintEnd_toStartOf="@id/address_button" />
 
-        <!-- Кнопка с адресом -->
-        <TextView
+        <!-- Кнопка адреса справа как ImageButton с иконкой narrow -->
+        <ImageButton
             android:id="@+id/address_button"
-            android:layout_width="350dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp"
-            android:layout_marginBottom="12dp"
-            android:padding="4dp"
-            android:background="@drawable/describe_but"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:textColor="@android:color/white"
-            app:layout_constraintTop_toBottomOf="@id/item_description"
-            app:layout_constraintStart_toStartOf="parent"
+            android:layout_width="67dp"
+            android:layout_height="135dp"
+            android:background="@null"
+            android:contentDescription="@string/app_name"
+
+            android:paddingLeft="1dp"
+
+            android:paddingRight="1dp"
+            android:scaleType="centerInside"
+            android:src="@drawable/narrow"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Цена внизу -->
+        <TextView
+            android:id="@+id/price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="17dp"
+            android:layout_marginTop="2dp"
+            android:text="+500р."
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@id/pop_img"
             app:layout_constraintBottom_toBottomOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

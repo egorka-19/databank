@@ -73,7 +73,7 @@ public class RoundedRevealView extends View {
 
         // Target size of the rect as fraction of screen; grows with progress
         float maxWidth = Math.min(w, dp(getContext(), 200));
-        float maxHeight = Math.min(h, dp(getContext(), 80));
+        float maxHeight = Math.min(h, dp(getContext(), 100));
         float currentW = maxWidth * progress;
         float currentH = maxHeight * progress;
 

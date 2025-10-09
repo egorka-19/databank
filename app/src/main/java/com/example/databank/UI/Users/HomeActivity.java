@@ -7,8 +7,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.example.databank.R;
-import com.example.databank.bottomnav.chats.ChatsFragment;
-import com.example.databank.bottomnav.like.LikeFragment;
+import com.example.databank.bottomnav.analytics.AnalyticsFragment;
 import com.example.databank.bottomnav.main.ThemainscreenFragment;
 import com.example.databank.bottomnav.profile.ProfileFragment;
 import com.example.databank.databinding.ActivityHomeBinding;
@@ -41,14 +40,14 @@ public class HomeActivity extends AppCompatActivity {
 
         binding.bottomNav.setSelectedItemId(R.id.main);
         Map<Integer, Fragment> fragmentMap = new HashMap<>();
+        fragmentMap.put(R.id.analytics, new AnalyticsFragment());
         fragmentMap.put(R.id.profile, new ProfileFragment());
         fragmentMap.put(R.id.main, new ThemainscreenFragment());
-        fragmentMap.put(R.id.chats, new ChatsFragment());
-        fragmentMap.put(R.id.like, new LikeFragment());
         binding.bottomNav.setOnItemSelectedListener(item -> {
             Fragment fragment = fragmentMap.get(item.getItemId());
-
-            getSupportFragmentManager().beginTransaction().replace(binding.fragmentContainer.getId(),fragment).commit();
+            if (fragment != null) {
+                getSupportFragmentManager().beginTransaction().replace(binding.fragmentContainer.getId(), fragment).commit();
+            }
             return true;
         });
     }
