@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -16,8 +15,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.databank.Model.Users;
 import com.example.databank.Prevalent.Prevalent;
 import com.example.databank.R;
-import com.example.databank.UI.Admin.AdminCategoryActivity;
 import com.example.databank.UI.Users.HomeActivity;
+import com.example.databank.UI.Users.CreateGoalActivity;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -32,74 +31,55 @@ public class LoginActivity extends AppCompatActivity {
     private ImageButton loginButton, swipeButton;
     private EditText loginPhoneInput, loginPasswordInput;
     private ProgressDialog loadingBar;
-    private String parentDbName = "Users";
     private CheckBox checkBoxRememberMe;
-    private TextView AdminLink, NotAdminLink;
+    private String expectedUserType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+        
         swipeButton = (ImageButton)findViewById(R.id.swipe_btn);
-        loginButton = (ImageButton)findViewById(R.id.login_button);
-
-
         loginButton = (ImageButton)findViewById(R.id.login_button);
         loginPasswordInput = (EditText) findViewById(R.id.login_password_input);
         loginPhoneInput = (EditText) findViewById(R.id.login_phone_input);
         loadingBar = new ProgressDialog(this);
         checkBoxRememberMe = (CheckBox) findViewById(R.id.login_checkbox);
-        // Опциональные ссылки для режима администратора: инициализируем только если есть в макете
-        AdminLink = (TextView) findViewById(getResources().getIdentifier("admin_link", "id", getPackageName()));
-        NotAdminLink = (TextView) findViewById(getResources().getIdentifier("not_admin_link", "id", getPackageName()));
+        
         Paper.init(this);
+
+        // Получаем тип пользователя из Intent
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("userType")) {
+            expectedUserType = intent.getStringExtra("userType");
+            System.out.println("Ожидаемый тип пользователя: " + expectedUserType);
+        }
+
         swipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent homeIntent = new Intent(LoginActivity.this, RegisterActivity.class);
+                if (expectedUserType != null) {
+                    homeIntent.putExtra("userType", expectedUserType);
+                }
                 startActivity(homeIntent);
             }
         });
 
-        System.out.println("create and check");
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 loginUser();
             }
         });
-        if (AdminLink != null && NotAdminLink != null) {
-            AdminLink.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AdminLink.setVisibility(View.INVISIBLE);
-                    NotAdminLink.setVisibility(View.VISIBLE);
-                    Toast.makeText(LoginActivity.this, "Вы вошли как администратор", Toast.LENGTH_SHORT).show();
-                    parentDbName = "Admins";
-                    checkBoxRememberMe.setVisibility(View.INVISIBLE);
-                }
-            });
-            NotAdminLink.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    AdminLink.setVisibility(View.VISIBLE);
-                    NotAdminLink.setVisibility(View.INVISIBLE);
-                    Toast.makeText(LoginActivity.this, "Вы вошли как пользователь", Toast.LENGTH_SHORT).show();
-                    parentDbName = "Users";
-                    checkBoxRememberMe.setVisibility(View.VISIBLE);
-                }
-            });
-        } else {
-            // Если ссылки отсутствуют в макете, работаем в пользовательском режиме
-            parentDbName = "Users";
-        }
     }
 
     private void loginUser() {
         String phone = loginPhoneInput.getText().toString();
         String password = loginPasswordInput.getText().toString();
+        
         if (TextUtils.isEmpty(phone)){
-            Toast.makeText(this, "Введите номер телефона", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Введите номер договора", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(password)){
             Toast.makeText(this, "Введите пароль", Toast.LENGTH_SHORT).show();
@@ -127,43 +107,52 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 String phone = loginPhoneInput.getText().toString();
 
-                if (snapshot.child(parentDbName).child(phone).exists()){
+                if (snapshot.child("Users").child(phone).exists()){
+                    Users usersData = snapshot.child("Users").child(phone).getValue(Users.class);
 
-                    Users usersData = snapshot.child(parentDbName).child(phone).getValue(Users.class);
-
-                    if (usersData.getPhone().equals(phone))
-                    {
+                    if (usersData.getPhone().equals(phone)) {
                         if (usersData.getPassword().equals(password)){
-
-                            if (parentDbName.equals("Users")){
+                            // Проверяем тип пользователя
+                            String actualUserType = usersData.getUserType();
+                            if (expectedUserType != null && !expectedUserType.equals(actualUserType)) {
                                 loadingBar.dismiss();
-                                Toast.makeText(LoginActivity.this, "Успешный вход!", Toast.LENGTH_SHORT).show();
+                                String expectedTypeText = "parent".equals(expectedUserType) ? "родителя" : "ребенка";
+                                String actualTypeText = "parent".equals(actualUserType) ? "родителя" : "ребенка";
+                                Toast.makeText(LoginActivity.this, "Этот аккаунт принадлежит " + actualTypeText + ", а вы выбрали вход как " + expectedTypeText, Toast.LENGTH_LONG).show();
+                                return;
+                            }
+                            
+                            loadingBar.dismiss();
+                            Toast.makeText(LoginActivity.this, "Успешный вход!", Toast.LENGTH_SHORT).show();
+                            
+                            // Проверяем targetAmount только для детей
+                            if ("child".equals(actualUserType)) {
+                                String targetAmount = usersData.getTargetAmount();
+                                if (targetAmount == null || targetAmount.equals("0")) {
+                                    // Если цель не установлена, переходим на экран создания цели
+                                    Intent createGoalIntent = new Intent(LoginActivity.this, CreateGoalActivity.class);
+                                    createGoalIntent.putExtra("phone", phone);
+                                    startActivity(createGoalIntent);
+                                } else {
+                                    // Если цель уже установлена, переходим на главный экран
+                                    Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
+                                    homeIntent.putExtra("phone", phone);
+                                    startActivity(homeIntent);
+                                }
+                            } else {
+                                // Для родителей сразу переходим на главный экран
                                 Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                                 homeIntent.putExtra("phone", phone);
-                                System.out.println("login" + phone);
                                 startActivity(homeIntent);
-
-                            } else if(parentDbName.equals("Admins")){
-                                loadingBar.dismiss();
-                                Toast.makeText(LoginActivity.this, "Успешный вход!", Toast.LENGTH_SHORT).show();
-                                Intent homeAdminIntent = new Intent(LoginActivity.this, AdminCategoryActivity.class);
-                                homeAdminIntent.putExtra("phone", phone);
-                                startActivity(homeAdminIntent);
-
                             }
-
-                        }
-                        else{
+                        } else {
                             loadingBar.dismiss();
                             Toast.makeText(LoginActivity.this, "Неверный пароль", Toast.LENGTH_SHORT).show();
                         }
                     }
-
-
-                }
-                else {
+                } else {
                     loadingBar.dismiss();
-                    Toast.makeText(LoginActivity.this, "Aккаунт с номером " + phone + " не существует", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(LoginActivity.this, "Аккаунт с номером карты " + phone + " не существует", Toast.LENGTH_SHORT).show();
                     Intent registerIntent = new Intent(LoginActivity.this, RegisterActivity.class);
                     startActivity(registerIntent);
                 }
@@ -171,7 +160,8 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                loadingBar.dismiss();
+                Toast.makeText(LoginActivity.this, "Ошибка подключения к базе данных", Toast.LENGTH_SHORT).show();
             }
         });
     }

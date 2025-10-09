@@ -24,6 +24,9 @@ import com.bumptech.glide.Glide;
 import com.example.databank.Prevalent.Prevalent;
 import com.example.databank.R;
 import com.example.databank.UI.Users.MainActivity;
+import com.example.databank.UI.Users.QRScannerActivity;
+import com.example.databank.UI.Users.QRCodeDisplayActivity;
+import com.example.databank.Utils.QRCodeGenerator;
 import com.example.databank.databinding.FragmentProfileBinding;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
@@ -42,6 +45,8 @@ public class ProfileFragment extends Fragment {
     private FragmentProfileBinding binding;
     private Uri filePath;
     public String phone;
+    private String userType;
+    private String username;
 
     //private List<publish> PublishList = new ArrayList<>();
 
@@ -130,8 +135,10 @@ public class ProfileFragment extends Fragment {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            String username = snapshot.child("username").getValue(String.class);
+                            username = snapshot.child("username").getValue(String.class);
                             String profileImage = snapshot.child("profileImage").getValue(String.class);
+                            userType = snapshot.child("userType").getValue(String.class);
+                            
                             if (username != null) {
                                 binding.usernameTv.setText(username);
                             }
@@ -146,6 +153,9 @@ public class ProfileFragment extends Fragment {
                             } else {
                                 Toast.makeText(getContext(), "Загрузите свое фото!", Toast.LENGTH_SHORT).show();
                             }
+                            
+                            // Добавляем функциональность в зависимости от типа пользователя
+                            setupUserSpecificFeatures();
                         }
                     }
 
@@ -206,6 +216,35 @@ public class ProfileFragment extends Fragment {
                         }
                     });
         }
+    }
+
+    private void setupUserSpecificFeatures() {
+        if ("parent".equals(userType)) {
+            // Для родителей добавляем кнопку генерации QR-кода
+            binding.qrCodeButton.setVisibility(View.VISIBLE);
+            binding.qrCodeButton.setText("Показать QR-код");
+            binding.qrCodeButton.setOnClickListener(v -> showQRCode());
+        } else if ("child".equals(userType)) {
+            // Для детей добавляем кнопку сканирования QR-кода
+            binding.qrCodeButton.setVisibility(View.VISIBLE);
+            binding.qrCodeButton.setText("Подключиться к родителю");
+            binding.qrCodeButton.setOnClickListener(v -> startQRScanner());
+        }
+    }
+
+    private void showQRCode() {
+        if (username != null && phone != null) {
+            Intent qrIntent = new Intent(getContext(), QRCodeDisplayActivity.class);
+            qrIntent.putExtra("phone", phone);
+            qrIntent.putExtra("username", username);
+            startActivity(qrIntent);
+        }
+    }
+
+    private void startQRScanner() {
+        Intent scannerIntent = new Intent(getContext(), QRScannerActivity.class);
+        scannerIntent.putExtra("phone", phone);
+        startActivity(scannerIntent);
     }
 
 }

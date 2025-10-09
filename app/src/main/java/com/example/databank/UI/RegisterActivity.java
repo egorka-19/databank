@@ -7,7 +7,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -28,30 +27,39 @@ public class RegisterActivity extends AppCompatActivity {
     public ImageButton registerBtn, swipeButton;
     public EditText usernameInput, phoneInput, passwordInput, lastnameInput, ageInput;
     private ProgressDialog loadingBar;
-    public TextView savings;
+    private String userType;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
+        
         swipeButton = (ImageButton)findViewById(R.id.swipe_btn);
-
         registerBtn = (ImageButton)findViewById(R.id.login_button);
         usernameInput = (EditText)findViewById(R.id.register_username_input);
         phoneInput = (EditText)findViewById(R.id.login_phone_input);
         passwordInput = (EditText)findViewById(R.id.login_password_input);
         lastnameInput = (EditText)findViewById(R.id.register_lastname_input);
         ageInput = (EditText)findViewById(R.id.register_age_input);
-
-
         loadingBar = new ProgressDialog(this);
 
-        swipeButton = (ImageButton)findViewById(R.id.swipe_btn);
+        // Получаем тип пользователя из Intent
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("userType")) {
+            userType = intent.getStringExtra("userType");
+            System.out.println("Тип пользователя для регистрации: " + userType);
+        } else {
+            // По умолчанию создаем ребенка
+            userType = "child";
+        }
 
         swipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent homeIntent = new Intent(RegisterActivity.this, LoginActivity.class);
+                if (userType != null) {
+                    homeIntent.putExtra("userType", userType);
+                }
                 startActivity(homeIntent);
             }
         });
@@ -62,7 +70,6 @@ public class RegisterActivity extends AppCompatActivity {
                 CreateAccount();
             }
         });
-
     }
 
     private void CreateAccount() {
@@ -72,17 +79,23 @@ public class RegisterActivity extends AppCompatActivity {
         String lastname = lastnameInput.getText().toString();
         String age = ageInput.getText().toString();
         String savings = "0";
-        String targetAmount = "30000";
+        String targetAmount = "0";
         String profileImage = "";
 
         if (TextUtils.isEmpty(username)){
             Toast.makeText(this, "Введите имя", Toast.LENGTH_SHORT).show();
         }
+        else if (TextUtils.isEmpty(lastname)){
+            Toast.makeText(this, "Введите фамилию", Toast.LENGTH_SHORT).show();
+        }
         else if (TextUtils.isEmpty(phone)){
-            Toast.makeText(this, "Введите номер телефона", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "Введите номер карты", Toast.LENGTH_SHORT).show();
         }
         else if (TextUtils.isEmpty(password)){
             Toast.makeText(this, "Введите пароль", Toast.LENGTH_SHORT).show();
+        }
+        else if (TextUtils.isEmpty(age)){
+            Toast.makeText(this, "Введите возраст", Toast.LENGTH_SHORT).show();
         }
         else {
             loadingBar.setTitle("Создание аккаунта");
@@ -91,8 +104,6 @@ public class RegisterActivity extends AppCompatActivity {
             loadingBar.show();
 
             ValidatePhone(username, phone, password, profileImage, lastname, age, savings, targetAmount);
-
-
         }
     }
 
@@ -112,6 +123,7 @@ public class RegisterActivity extends AppCompatActivity {
                     userDataMap.put("username", username);
                     userDataMap.put("password", password);
                     userDataMap.put("profileImage", profileImage);
+                    userDataMap.put("userType", userType);
 
                     RootRef.child("Users").child(phone).updateChildren(userDataMap)
                             .addOnCompleteListener(new OnCompleteListener<Void>() {
@@ -121,31 +133,31 @@ public class RegisterActivity extends AppCompatActivity {
                                         loadingBar.dismiss();
                                         Toast.makeText(RegisterActivity.this, "Регистрация прошла успешно", Toast.LENGTH_SHORT).show();
                                         Intent loginIntent = new Intent (RegisterActivity.this, LoginActivity.class);
+                                        if (userType != null) {
+                                            loginIntent.putExtra("userType", userType);
+                                        }
                                         startActivity(loginIntent);
-
                                     } else {
                                         loadingBar.dismiss();
-                                        Toast.makeText(RegisterActivity.this, "Ошибка", Toast.LENGTH_SHORT).show();
-
+                                        Toast.makeText(RegisterActivity.this, "Ошибка регистрации", Toast.LENGTH_SHORT).show();
                                     }
                                 }
                             });
-
-
-                }
-                else {
-                    Toast.makeText(RegisterActivity.this, "Номер " + phone + " уже зарегистрирован", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(RegisterActivity.this, "Номер карты " + phone + " уже зарегистрирован", Toast.LENGTH_SHORT).show();
                     loadingBar.dismiss();
                     Intent loginIntent = new Intent (RegisterActivity.this, LoginActivity.class);
+                    if (userType != null) {
+                        loginIntent.putExtra("userType", userType);
+                    }
                     startActivity(loginIntent);
                 }
-
-
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError error) {
-
+                loadingBar.dismiss();
+                Toast.makeText(RegisterActivity.this, "Ошибка подключения к базе данных", Toast.LENGTH_SHORT).show();
             }
         });
     }

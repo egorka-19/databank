@@ -52,6 +52,11 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:24.0.2'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'com.jjoe64:graphview:4.2.2'
+    
+    // QR Code dependencies
+    implementation 'com.journeyapps:zxing-android-embedded:4.3.0'
+    implementation 'com.google.zxing:core:3.5.2'
+    
     // Use version catalog aliases for core AndroidX/UI deps
 
     // duplicate of libs.material or earlier declaration; removing to avoid conflict

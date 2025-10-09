@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
 
             new Handler().postDelayed(() -> {
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                i.putExtra("parentDbName", parentDbName);
+                i.putExtra("userType", parentDbName.equals("Admins") ? "parent" : "child");
                 startActivity(i);
                 finish();
             }, 2000);

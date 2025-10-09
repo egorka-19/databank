@@ -246,4 +246,19 @@
             android:src="@drawable/ic_arrow_right" />
     </LinearLayout>
 
+    <!-- Кнопка QR-кода -->
+    <Button
+        android:id="@+id/qr_code_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/menu_item_background_with_shadow"
+        android:text="QR-код"
+        android:textColor="@color/black"
+        android:textSize="16sp"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@+id/achievements_btn" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
