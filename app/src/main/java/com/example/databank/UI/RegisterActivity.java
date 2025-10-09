@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -25,8 +26,9 @@ import java.util.HashMap;
 
 public class RegisterActivity extends AppCompatActivity {
     public ImageButton registerBtn, swipeButton;
-    public EditText usernameInput, phoneInput, passwordInput;
+    public EditText usernameInput, phoneInput, passwordInput, lastnameInput, ageInput;
     private ProgressDialog loadingBar;
+    public TextView savings;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,6 +40,10 @@ public class RegisterActivity extends AppCompatActivity {
         usernameInput = (EditText)findViewById(R.id.register_username_input);
         phoneInput = (EditText)findViewById(R.id.login_phone_input);
         passwordInput = (EditText)findViewById(R.id.login_password_input);
+        lastnameInput = (EditText)findViewById(R.id.register_lastname_input);
+        ageInput = (EditText)findViewById(R.id.register_age_input);
+
+
         loadingBar = new ProgressDialog(this);
 
         swipeButton = (ImageButton)findViewById(R.id.swipe_btn);
@@ -63,6 +69,10 @@ public class RegisterActivity extends AppCompatActivity {
         String username = usernameInput.getText().toString();
         String phone = phoneInput.getText().toString();
         String password = passwordInput.getText().toString();
+        String lastname = lastnameInput.getText().toString();
+        String age = ageInput.getText().toString();
+        String savings = "0";
+        String targetAmount = "30000";
         String profileImage = "";
 
         if (TextUtils.isEmpty(username)){
@@ -80,13 +90,13 @@ public class RegisterActivity extends AppCompatActivity {
             loadingBar.setCanceledOnTouchOutside(false);
             loadingBar.show();
 
-            ValidatePhone(username, phone, password, profileImage);
+            ValidatePhone(username, phone, password, profileImage, lastname, age, savings, targetAmount);
 
 
         }
     }
 
-    private void ValidatePhone(String username, String phone, String password, String profileImage) {
+    private void ValidatePhone(String username, String phone, String password, String profileImage, String age, String lastname, String savings, String targetAmount) {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -95,6 +105,10 @@ public class RegisterActivity extends AppCompatActivity {
                 if (!(snapshot.child("Users").child(phone).exists())){
                     HashMap <String, Object> userDataMap = new HashMap<>();
                     userDataMap.put("phone", phone);
+                    userDataMap.put("age", age);
+                    userDataMap.put("savings", savings);
+                    userDataMap.put("targetAmount", targetAmount);
+                    userDataMap.put("lastname", lastname);
                     userDataMap.put("username", username);
                     userDataMap.put("password", password);
                     userDataMap.put("profileImage", profileImage);

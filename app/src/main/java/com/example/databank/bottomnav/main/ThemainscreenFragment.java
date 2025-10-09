@@ -9,16 +9,14 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CheckBox;
-import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ProgressBar;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
@@ -36,11 +34,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.example.databank.Model.HomeCategory;
 import com.example.databank.Model.PopularModel;
-import com.example.databank.Model.ViewAllModel;
 import com.example.databank.R;
 import com.example.databank.adapters.HomeAdapter;
 import com.example.databank.adapters.PopularAdapters;
-import com.example.databank.adapters.ViewAllAdapters;
 import com.example.databank.databinding.FragmentMainBinding;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -67,6 +63,16 @@ public class ThemainscreenFragment extends Fragment {
     private FragmentMainBinding binding;
     FirebaseFirestore db;
     private Uri filePath;
+    
+    // Элементы прогресс-бара
+    private ProgressBar savingsProgressBar;
+    private TextView progressText;
+    private TextView progressAmount;
+    
+    // Данные для прогресса
+    private static final int DEFAULT_TARGET_AMOUNT = 30000; // Цель по умолчанию - 30 000 рублей
+    private int currentAmount = 0; // Текущая накопленная сумма
+    private int targetAmount = DEFAULT_TARGET_AMOUNT; // Цель накоплений (загружается из Firebase)
 
     private ImageButton nextButton, allCategoryBtn;
     RecyclerView popularRec, homeCatRec;
@@ -77,10 +83,6 @@ public class ThemainscreenFragment extends Fragment {
 
     List<HomeCategory> categoryList;
     HomeAdapter homeAdapter;
-    EditText search_box;
-    private List<ViewAllModel> viewAllModelList;
-    private RecyclerView recyclerViewSearch;
-    private ViewAllAdapters viewAllAdapters;
 
     public String phone;
 
@@ -97,6 +99,14 @@ public class ThemainscreenFragment extends Fragment {
         homeCatRec = view.findViewById(R.id.exp_rec);
         progressBar = view.findViewById(R.id.progressbar);
         phone = requireActivity().getIntent().getStringExtra("phone");
+        
+        // Инициализация прогресс-бара накоплений
+        savingsProgressBar = view.findViewById(R.id.progress_bar);
+        progressText = view.findViewById(R.id.progress_text);
+        progressAmount = view.findViewById(R.id.progress_amount);
+        
+        // Загружаем данные о накоплениях пользователя
+        loadSavingsData();
 
         progressBar.setVisibility(VISIBLE);
 
@@ -159,42 +169,6 @@ public class ThemainscreenFragment extends Fragment {
                 }
         );
 
-        ////////////Search View
-
-        recyclerViewSearch = view.findViewById(R.id.search_rec);
-        search_box = view.findViewById(R.id.serach_box);
-        viewAllModelList = new ArrayList<>();
-        viewAllAdapters = new ViewAllAdapters(getContext(), viewAllModelList);
-        recyclerViewSearch.setLayoutManager(new GridLayoutManager(getContext(), 1));
-        recyclerViewSearch.setAdapter(viewAllAdapters);
-        recyclerViewSearch.setHasFixedSize(true);
-        search_box.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                popularRec.setVisibility(VISIBLE);
-                homeCatRec.setVisibility(VISIBLE);
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                popularRec.setVisibility(VISIBLE);
-                homeCatRec.setVisibility(VISIBLE);
-
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                popularRec.setVisibility(VISIBLE);
-                homeCatRec.setVisibility(VISIBLE);
-                if (s.toString().isEmpty()){
-                    viewAllModelList.clear();
-                    viewAllAdapters.notifyDataSetChanged();
-                }else{
-                    searchProduct(s.toString());
-                }
-
-            }
-        });
 
         return view;
     }
@@ -247,51 +221,171 @@ public class ThemainscreenFragment extends Fragment {
                 });
     }
 
-    private void searchProduct(String type) {
-        if (!type.isEmpty()) {
-            // Show search results
-            db.collection("events")
-                    .whereEqualTo("type", type)
-                    .get()
-                    .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+    private void loadSavingsData() {
+        // Загружаем данные о накоплениях из Firebase Database
+        if (phone != null && !phone.isEmpty()) {
+            System.out.println("Loading savings for phone: " + phone);
+            
+            // Загружаем текущую сумму накоплений
+            FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("savings")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
-                        public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                            if (task.isSuccessful() && task.getResult() != null) {
-                                viewAllModelList.clear();
-                                for (DocumentSnapshot doc : task.getResult().getDocuments()) {
-                                    ViewAllModel viewAllModel = doc.toObject(ViewAllModel.class);
-                                    viewAllModelList.add(viewAllModel);
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            System.out.println("Savings snapshot exists: " + snapshot.exists());
+                            System.out.println("Savings snapshot value: " + snapshot.getValue());
+                            
+                            if (snapshot.exists()) {
+                                Object value = snapshot.getValue();
+                                if (value instanceof Integer) {
+                                    currentAmount = (Integer) value;
+                                } else if (value instanceof Long) {
+                                    currentAmount = ((Long) value).intValue();
+                                } else if (value instanceof String) {
+                                    String stringValue = (String) value;
+                                    if (stringValue.isEmpty()) {
+                                        currentAmount = 0;
+                                    } else {
+                                        try {
+                                            currentAmount = Integer.parseInt(stringValue);
+                                        } catch (NumberFormatException e) {
+                                            currentAmount = 0;
+                                        }
+                                    }
+                                } else {
+                                    currentAmount = 0;
                                 }
-                                viewAllAdapters.notifyDataSetChanged();
-
-                                // Hide category and popular items, show search results
-                                popularRec.setVisibility(INVISIBLE);
-                                homeCatRec.setVisibility(INVISIBLE);
-                                recyclerViewSearch.setVisibility(VISIBLE);
+                            } else {
+                                currentAmount = 0;
                             }
+                            
+                            System.out.println("Current amount set to: " + currentAmount);
+                            loadTargetAmount();
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            System.out.println("Savings Firebase error: " + error.getMessage());
+                            currentAmount = 0;
+                            loadTargetAmount();
                         }
                     });
         } else {
-            // When search is cleared
-            viewAllModelList.clear();
-            viewAllAdapters.notifyDataSetChanged();
-            recyclerViewSearch.setVisibility(INVISIBLE);
-
-            // Show category and popular items based on selected category
-            popularRec.setVisibility(VISIBLE);
-            homeCatRec.setVisibility(VISIBLE);
-
-            // Reload items based on current category selection
-            if (homeAdapter != null && homeAdapter.getSelectedPosition() == 0) {
-                // If "All" is selected
-                loadAllEvents();
-            } else if (homeAdapter != null && categoryList != null && homeAdapter.getSelectedPosition() < categoryList.size()) {
-                // If specific category is selected
-                filterItemsByCategory(categoryList.get(homeAdapter.getSelectedPosition()).getType());
-            }
+            System.out.println("Phone is null or empty");
+            currentAmount = 0;
+            targetAmount = DEFAULT_TARGET_AMOUNT;
+            updateProgressBar();
         }
     }
 
+    private void loadTargetAmount() {
+        // Загружаем цель накоплений из Firebase Database
+        if (phone != null && !phone.isEmpty()) {
+            FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("targetAmount")
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull DataSnapshot snapshot) {
+                            System.out.println("Target snapshot exists: " + snapshot.exists());
+                            System.out.println("Target snapshot value: " + snapshot.getValue());
+                            
+                            if (snapshot.exists()) {
+                                Object value = snapshot.getValue();
+                                if (value instanceof Integer) {
+                                    targetAmount = (Integer) value;
+                                } else if (value instanceof Long) {
+                                    targetAmount = ((Long) value).intValue();
+                                } else if (value instanceof String) {
+                                    String stringValue = (String) value;
+                                    if (stringValue.isEmpty()) {
+                                        targetAmount = DEFAULT_TARGET_AMOUNT;
+                                    } else {
+                                        try {
+                                            targetAmount = Integer.parseInt(stringValue);
+                                        } catch (NumberFormatException e) {
+                                            targetAmount = DEFAULT_TARGET_AMOUNT;
+                                        }
+                                    }
+                                } else {
+                                    targetAmount = DEFAULT_TARGET_AMOUNT;
+                                }
+                            } else {
+                                targetAmount = DEFAULT_TARGET_AMOUNT;
+                            }
+                            
+                            System.out.println("Target amount set to: " + targetAmount);
+                            updateProgressBar();
+                        }
 
+                        @Override
+                        public void onCancelled(@NonNull DatabaseError error) {
+                            System.out.println("Target Firebase error: " + error.getMessage());
+                            targetAmount = DEFAULT_TARGET_AMOUNT;
+                            updateProgressBar();
+                        }
+                    });
+        } else {
+            targetAmount = DEFAULT_TARGET_AMOUNT;
+            updateProgressBar();
+        }
+    }
+
+    private void updateProgressBar() {
+        System.out.println("updateProgressBar called");
+        System.out.println("savingsProgressBar: " + savingsProgressBar);
+        System.out.println("progressText: " + progressText);
+        System.out.println("progressAmount: " + progressAmount);
+        
+        if (savingsProgressBar == null || progressText == null || progressAmount == null) {
+            System.out.println("One of the UI elements is null, returning");
+            return;
+        }
+
+        // Вычисляем процент
+        double percentageDouble = (currentAmount * 100.0) / targetAmount;
+        int percentage = (int) Math.round(percentageDouble);
+        if (percentage > 100) percentage = 100;
+        
+        System.out.println("Percentage calculation: " + currentAmount + " * 100.0 / " + targetAmount + " = " + percentageDouble + " -> " + percentage);
+
+        System.out.println("Setting progress to: " + percentage + "%");
+        System.out.println("Current amount: " + currentAmount);
+        System.out.println("Target amount: " + targetAmount);
+
+        // Обновляем прогресс-бар
+        savingsProgressBar.setProgress(percentage);
+
+        // Обновляем текст с процентами
+        progressText.setText(percentage + "%");
+
+        // Обновляем текст с суммой
+        String currentAmountFormatted = String.format("%,d", currentAmount).replace(",", " ");
+        String targetAmountFormatted = String.format("%,d", targetAmount).replace(",", " ");
+        progressAmount.setText(currentAmountFormatted + " ₽ / " + targetAmountFormatted + " ₽");
+        
+        System.out.println("Progress bar updated successfully");
+    }
+
+    // Метод для обновления накоплений (можно вызывать из других частей приложения)
+    public void updateSavings(int newAmount) {
+        currentAmount = newAmount;
+        updateProgressBar();
+        
+        // Сохраняем в Firebase
+        if (phone != null && !phone.isEmpty()) {
+            FirebaseDatabase.getInstance().getReference().child("Users").child(phone)
+                    .child("savings").setValue(currentAmount);
+        }
+    }
+
+    // Метод для обновления цели накоплений
+    public void updateTargetAmount(int newTargetAmount) {
+        targetAmount = newTargetAmount;
+        updateProgressBar();
+        
+        // Сохраняем в Firebase
+        if (phone != null && !phone.isEmpty()) {
+            FirebaseDatabase.getInstance().getReference().child("Users").child(phone)
+                    .child("targetAmount").setValue(targetAmount);
+        }
+    }
 
 }
