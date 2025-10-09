@@ -7,52 +7,84 @@
     android:background="@color/white"
     tools:context=".bottomnav.main.ThemainscreenFragment">
 
-    <ImageView
-        android:id="@+id/background"
-        android:layout_width="412dp"
-        android:layout_height="882dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/main_screen_main"
-        tools:layout_editor_absoluteX="-1dp"
-        tools:layout_editor_absoluteY="32dp" />
     <!-- Картинка поиска -->
     <ImageView
-        android:id="@+id/search_iv"
-        android:layout_width="425dp"
-        android:layout_height="53dp"
-        android:layout_marginTop="72dp"
-        android:scaleType="fitCenter"
-        android:src="@drawable/search"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:id="@+id/applogo2"
+        android:layout_width="275dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="45dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerInside"
+        android:src="@drawable/text_register"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <!-- Поле ввода -->
-    <EditText
-        android:id="@+id/serach_box"
-        android:layout_width="275dp"
-        android:layout_height="41dp"
-        android:layout_marginStart="35dp"
-        android:layout_marginEnd="100dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/nunito"
-        android:gravity="center|left"
-        android:hint="Поиск"
-        android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="@id/search_iv"
+    <!-- Прогресс-бар для накоплений -->
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/progress_container"
+        android:layout_width="425dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/progress_background"
+        android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@id/search_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/applogo2">
+
+        <!-- Фон прогресс-бара -->
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="0dp"
+            android:layout_height="25dp"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:max="100"
+            android:progress="0"
+            android:progressDrawable="@drawable/progress_bar_drawable"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <!-- Текст с процентами -->
+        <TextView
+            android:id="@+id/progress_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:text="0%"
+            android:textColor="@color/black"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
+
+        <!-- Текст с суммой -->
+        <TextView
+            android:id="@+id/progress_amount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:textColor="@color/gray_fortext"
+            android:textSize="14sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/progress_text" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <!-- Результаты поиска -->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_rec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/serach_box" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_container" />
 
     <!-- Рекомендации / категории -->
 
@@ -64,12 +96,11 @@
         android:layout_width="match_parent"
         android:layout_height="45dp"
         android:layout_marginStart="10dp"
-        android:layout_marginTop="10dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/search_iv" />
+        app:layout_constraintTop_toBottomOf="@+id/progress_container" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/pop_rec"
