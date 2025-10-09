@@ -14,6 +14,9 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.databank.R;
 import com.example.databank.UI.LoginActivity;
+import com.example.databank.Prevalent.Prevalent;
+
+import io.paperdb.Paper;
 
 public class settings extends AppCompatActivity {
     ImageButton but_logout, but_help, but_back;
@@ -39,8 +42,18 @@ public class settings extends AppCompatActivity {
             but_logout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    // Очищаем сохранённые данные "Запомнить меня"
+                    Paper.init(settings.this);
+                    Paper.book().delete(Prevalent.UserPhoneKey);
+                    Paper.book().delete(Prevalent.UserPasswordKey);
+                    // Опционально: очистить все записи
+                    // Paper.book().destroy();
+
+                    // Переходим на экран логина и очищаем back stack
                     Intent intent = new Intent(settings.this, LoginActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                     startActivity(intent);
+                    finish();
                 }
             });
 
