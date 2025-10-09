@@ -5,6 +5,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -15,6 +17,7 @@ import com.example.databank.Prevalent.Prevalent;
 import com.example.databank.R;
 import com.example.databank.UI.LoginActivity;
 import com.example.databank.UI.RegisterActivity;
+import com.example.databank.UI.Users.views.RoundedRevealView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -35,29 +38,35 @@ public class MainActivity extends AppCompatActivity {
         loadingBar = new ProgressDialog(this);
 
         Paper.init(this);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
+        Button parentBtn = findViewById(R.id.button_parent);
+        Button childBtn = findViewById(R.id.button_child);
+        RoundedRevealView roundedOverlay = findViewById(R.id.rounded_overlay);
+
+        View.OnClickListener selectRole = v -> {
+            String parentDbName = (v.getId() == R.id.button_parent) ? "Admins" : "Users";
+            Button btn = (Button) v;
+
+            if (roundedOverlay != null) {
+                roundedOverlay.setVisibility(View.VISIBLE);
+                if (v.getId() == R.id.button_parent) {
+                    roundedOverlay.revealFromBottomLeft();
+                } else {
+                    roundedOverlay.revealFromBottomRight();
+                }
+            }
+
+            new Handler().postDelayed(() -> {
                 Intent i = new Intent(MainActivity.this, LoginActivity.class);
+                i.putExtra("parentDbName", parentDbName);
                 startActivity(i);
                 finish();
+            }, 2000);
+        };
 
-            }
-        }, 1 * 1000); // Когда будем делать анимацию, если вообще будем, то надо учесть то, что по времени должно быть в идеале 1 секунда, иначе когда
-        // делаешь больше, то ломается чекбокс запомни меня
+        if (parentBtn != null) parentBtn.setOnClickListener(selectRole);
+        if (childBtn != null) childBtn.setOnClickListener(selectRole);
 
-        String UserPhoneKey = Paper.book().read(Prevalent.UserPhoneKey);
-        String UserPasswordKey = Paper.book().read(Prevalent.UserPasswordKey);
-
-        if (UserPhoneKey != "" && UserPasswordKey != ""){
-            if (!TextUtils.isEmpty(UserPhoneKey) && !TextUtils.isEmpty(UserPasswordKey)){
-                ValidateUser(UserPhoneKey, UserPasswordKey);
-                loadingBar.setTitle("Вход в приложение");
-                loadingBar.setMessage("Пожалуйста, подождите...");
-                loadingBar.setCanceledOnTouchOutside(false);
-                loadingBar.show();
-            }
-        }
+        // Отключаем авто-вход на этом экране: переход выполняется только после выбора роли
 
     }
 
