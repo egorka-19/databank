@@ -3,56 +3,25 @@ package com.example.databank.Model;
 import java.io.Serializable;
 
 public class PopularModel implements Serializable {
-    String name;
-    String raiting;
-    String rub;
-    String price;
-    String img_url;
-    String type;
-    String description;
-    String phone;
-
-    public PopularModel(String img_url) {
-        this.img_url = img_url;
-    }
+    private String name;
+    private String img_url;
+    private String description;
+    private String age;
+    private String data;
+    private String place;
+    private String url;
 
     public PopularModel() {
-
     }
 
-
-    public PopularModel(String phone, String name, String raiting, String rub, String price, String type, String description) {
+    public PopularModel(String name, String img_url, String description, String age, String data, String place, String url) {
         this.name = name;
-        this.phone = phone;
-        this.raiting = raiting;
-        this.rub = rub;
-        this.price = price;
-        this.type = type;
-        this.description = description;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getImg_url() {
-        return img_url;
-    }
-
-    public void setImg_url(String img_url) {
         this.img_url = img_url;
+        this.description = description;
+        this.age = age;
+        this.data = data;
+        this.place = place;
+        this.url = url;
     }
 
     public String getName() {
@@ -63,35 +32,51 @@ public class PopularModel implements Serializable {
         this.name = name;
     }
 
-    public String getRaiting() {
-        return raiting;
+    public String getImg_url() {
+        return img_url;
     }
 
-    public void setRaiting(String raiting) {
-        this.raiting = raiting;
+    public void setImg_url(String img_url) {
+        this.img_url = img_url;
     }
 
-    public String getRub() {
-        return rub;
+    public String getDescription() {
+        return description;
     }
 
-    public void setRub(String rub) {
-        this.rub = rub;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getPrice() {
-        return price;
+    public String getAge() {
+        return age;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setAge(String age) {
+        this.age = age;
     }
 
-    public String getType() {
-        return type;
+    public String getData() {
+        return data;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public String getPlace() {
+        return place;
+    }
+
+    public void setPlace(String place) {
+        this.place = place;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

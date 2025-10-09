@@ -9,7 +9,7 @@ import androidx.fragment.app.Fragment;
 import com.example.databank.R;
 import com.example.databank.bottomnav.chats.ChatsFragment;
 import com.example.databank.bottomnav.like.LikeFragment;
-import com.example.databank.bottomnav.main.MainFragment;
+import com.example.databank.bottomnav.main.ThemainscreenFragment;
 import com.example.databank.bottomnav.profile.ProfileFragment;
 import com.example.databank.databinding.ActivityHomeBinding;
 import com.example.databank.product_card;
@@ -37,12 +37,12 @@ public class HomeActivity extends AppCompatActivity {
         new Intent(HomeActivity.this, product_card.class);
         intent.putExtra("phone", phone);
 
-        getSupportFragmentManager().beginTransaction().replace(binding.fragmentContainer.getId(), new MainFragment()).commit();
+        getSupportFragmentManager().beginTransaction().replace(binding.fragmentContainer.getId(), new ThemainscreenFragment()).commit();
 
         binding.bottomNav.setSelectedItemId(R.id.main);
         Map<Integer, Fragment> fragmentMap = new HashMap<>();
         fragmentMap.put(R.id.profile, new ProfileFragment());
-        fragmentMap.put(R.id.main, new MainFragment());
+        fragmentMap.put(R.id.main, new ThemainscreenFragment());
         fragmentMap.put(R.id.chats, new ChatsFragment());
         fragmentMap.put(R.id.like, new LikeFragment());
         binding.bottomNav.setOnItemSelectedListener(item -> {

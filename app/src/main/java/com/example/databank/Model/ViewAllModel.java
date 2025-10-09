@@ -3,35 +3,25 @@ package com.example.databank.Model;
 import java.io.Serializable;
 
 public class ViewAllModel implements Serializable {
-    String name;
-    String img_url;
-    String price;
-    String raiting;
-    String rub;
-    String type;
-    String description;
-    String phone;
+    private String name;
+    private String img_url;
+    private String description;
+    private String age;
+    private String data;
+    private String place;
+    private String url;
 
     public ViewAllModel() {
     }
 
-    public ViewAllModel(String phone, String name, String img_url, String price, String raiting, String rub, String type, String description) {
+    public ViewAllModel(String name, String img_url, String description, String age, String data, String place, String url) {
         this.name = name;
-        this.phone = phone;
         this.img_url = img_url;
-        this.price = price;
-        this.raiting = raiting;
-        this.rub = rub;
-        this.type = type;
         this.description = description;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
+        this.age = age;
+        this.data = data;
+        this.place = place;
+        this.url = url;
     }
 
     public String getName() {
@@ -50,44 +40,44 @@ public class ViewAllModel implements Serializable {
         this.img_url = img_url;
     }
 
-    public String getPrice() {
-        return price;
+    public String getDescription() {
+        return description;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    public void setDescription(String description) {
+        this.description = description;
     }
 
-    public String getRaiting() {
-        return raiting;
+    public String getAge() {
+        return age;
     }
 
-    public void setRaiting(String raiting) {
-        this.raiting = raiting;
+    public void setAge(String age) {
+        this.age = age;
     }
 
-    public String getRub() {
-        return rub;
+    public String getData() {
+        return data;
     }
 
-    public void setRub(String rub) {
-        this.rub = rub;
+    public void setData(String data) {
+        this.data = data;
     }
 
-    public String getType() {
-        return type;
+    public String getPlace() {
+        return place;
     }
 
-    public void setType(String type) {
-        this.type = type;
+    public void setPlace(String place) {
+        this.place = place;
     }
 
-    public String getPhone() {
-        return phone;
+    public String getUrl() {
+        return url;
     }
 
-    public void setPhone(String phone) {
-        this.phone = phone;
+    public void setUrl(String url) {
+        this.url = url;
     }
 }
 

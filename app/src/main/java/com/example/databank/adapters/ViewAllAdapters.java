@@ -12,9 +12,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.example.databank.Model.ViewAllModel;
 import com.example.databank.R;
+import com.example.databank.Model.ViewAllModel;
 import com.example.databank.product_card;
+import com.makeramen.roundedimageview.RoundedImageView;
 
 import java.util.List;
 
@@ -36,38 +37,72 @@ public class ViewAllAdapters extends RecyclerView.Adapter<ViewAllAdapters.ViewHo
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Glide.with(context).load(list.get(position).getImg_url()).into(holder.imageView);
-        holder.name.setText(list.get(position).getName());
-        holder.price.setText(list.get(position).getPrice());
-        holder.raiting.setText(list.get(position).getRaiting());
+        if (list == null || position < 0 || position >= list.size()) {
+            return;
+        }
+
+        ViewAllModel item = list.get(position);
+        if (item == null) {
+            return;
+        }
+
+        // Safely load image with Glide
+        try {
+            if (item.getImg_url() != null && !item.getImg_url().isEmpty()) {
+                Glide.with(context)
+                        .load(item.getImg_url())
+                        .error(R.drawable.izo)
+                        .placeholder(R.drawable.izo)
+                        .into(holder.popImg);
+            } else {
+                holder.popImg.setImageResource(R.drawable.izo);
+            }
+        } catch (Exception e) {
+            holder.popImg.setImageResource(R.drawable.izo);
+        }
+
+        // Safely set text values
+        if (item.getName() != null) {
+            holder.popName.setText(item.getName());
+        } else {
+            holder.popName.setText("");
+        }
+
+        if (item.getDescription() != null) {
+            holder.itemDescription.setText(item.getDescription());
+        } else {
+            holder.itemDescription.setText("");
+        }
 
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, product_card.class);
-                intent.putExtra("detail", list.get(position));
-                context.startActivity(intent);
+                if (item != null) {
+                    Intent intent = new Intent(context, product_card.class);
+                    intent.putExtra("detail", item);
+                    context.startActivity(intent);
+                }
             }
         });
-
-
     }
 
     @Override
     public int getItemCount() {
-        return list.size();
+        return list == null ? 0 : list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        ImageView imageView;
-        TextView name, price, raiting;
+        RoundedImageView popImg;
+        ImageView favoriteIcon;
+        TextView popName;
+        TextView itemDescription;
+        
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            imageView = itemView.findViewById(R.id.imageView);
-            name = itemView.findViewById(R.id.name);
-            price = itemView.findViewById(R.id.price);
-            raiting = itemView.findViewById(R.id.raiting);
+            popImg = itemView.findViewById(R.id.pop_img);
+            favoriteIcon = itemView.findViewById(R.id.favorite_icon);
+            popName = itemView.findViewById(R.id.pop_name);
+            itemDescription = itemView.findViewById(R.id.item_description);
         }
     }
 }
