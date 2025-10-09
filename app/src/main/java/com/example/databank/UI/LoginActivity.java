@@ -48,9 +48,10 @@ public class LoginActivity extends AppCompatActivity {
         loginPasswordInput = (EditText) findViewById(R.id.login_password_input);
         loginPhoneInput = (EditText) findViewById(R.id.login_phone_input);
         loadingBar = new ProgressDialog(this);
-        AdminLink = (TextView) findViewById(R.id.admin_panel_link);
-        NotAdminLink = (TextView) findViewById(R.id.not_admin_panel_link);
         checkBoxRememberMe = (CheckBox) findViewById(R.id.login_checkbox);
+        // Опциональные ссылки для режима администратора: инициализируем только если есть в макете
+        AdminLink = (TextView) findViewById(getResources().getIdentifier("admin_link", "id", getPackageName()));
+        NotAdminLink = (TextView) findViewById(getResources().getIdentifier("not_admin_link", "id", getPackageName()));
         Paper.init(this);
         swipeButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -67,28 +68,31 @@ public class LoginActivity extends AppCompatActivity {
                 loginUser();
             }
         });
-        AdminLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AdminLink.setVisibility(View.INVISIBLE);
-                NotAdminLink.setVisibility(View.VISIBLE);
-                Toast.makeText(LoginActivity.this, "Вы вошли как администратор", Toast.LENGTH_SHORT).show();
-//                loginButton.setText("Вход для админа");
-                parentDbName = "Admins";
-                checkBoxRememberMe.setVisibility(View.INVISIBLE);
-            }
-        });
-        NotAdminLink.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AdminLink.setVisibility(View.VISIBLE);
-                NotAdminLink.setVisibility(View.INVISIBLE);
-                Toast.makeText(LoginActivity.this, "Вы вошли как пользователь", Toast.LENGTH_SHORT).show();
-//                loginButton.setText("Войти");
-                parentDbName = "Users";
-                checkBoxRememberMe.setVisibility(View.VISIBLE);
-            }
-        });
+        if (AdminLink != null && NotAdminLink != null) {
+            AdminLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AdminLink.setVisibility(View.INVISIBLE);
+                    NotAdminLink.setVisibility(View.VISIBLE);
+                    Toast.makeText(LoginActivity.this, "Вы вошли как администратор", Toast.LENGTH_SHORT).show();
+                    parentDbName = "Admins";
+                    checkBoxRememberMe.setVisibility(View.INVISIBLE);
+                }
+            });
+            NotAdminLink.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    AdminLink.setVisibility(View.VISIBLE);
+                    NotAdminLink.setVisibility(View.INVISIBLE);
+                    Toast.makeText(LoginActivity.this, "Вы вошли как пользователь", Toast.LENGTH_SHORT).show();
+                    parentDbName = "Users";
+                    checkBoxRememberMe.setVisibility(View.VISIBLE);
+                }
+            });
+        } else {
+            // Если ссылки отсутствуют в макете, работаем в пользовательском режиме
+            parentDbName = "Users";
+        }
     }
 
     private void loginUser() {

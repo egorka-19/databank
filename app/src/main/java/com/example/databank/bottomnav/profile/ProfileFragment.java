@@ -21,6 +21,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.databank.Prevalent.Prevalent;
 import com.example.databank.R;
 import com.example.databank.UI.Users.favourite;
 import com.example.databank.UI.Users.settings;
@@ -34,6 +35,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.IOException;
+
+import io.paperdb.Paper;
 
 
 public class ProfileFragment extends Fragment {
@@ -50,7 +53,20 @@ public class ProfileFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         binding = FragmentProfileBinding.inflate(inflater, container, false);
 
-        phone = requireActivity().getIntent().getStringExtra("phone");
+        // Инициализация Paper для локального чтения сохранённых данных
+        if (getContext() != null) {
+            Paper.init(getContext());
+        }
+
+        // Пытаемся получить телефон из Intent
+        phone = requireActivity().getIntent() != null ? requireActivity().getIntent().getStringExtra("phone") : null;
+        // Фолбэк: берём из локального хранилища, если в Intent нет
+        if (phone == null || phone.isEmpty()) {
+            Object storedPhone = Paper.book().read(Prevalent.UserPhoneKey);
+            if (storedPhone instanceof String) {
+                phone = (String) storedPhone;
+            }
+        }
 
         loadUserInfo();
 
@@ -105,16 +121,24 @@ public class ProfileFragment extends Fragment {
     );
 
     private void loadUserInfo() {
+        // Если номер телефона отсутствует, не делаем запрос и показываем подсказку
+        if (phone == null || phone.isEmpty()) {
+            Toast.makeText(getContext(), "Не удалось определить пользователя. Войдите заново.", Toast.LENGTH_LONG).show();
+            return;
+        }
+
         FirebaseDatabase.getInstance().getReference().child("Users").child(phone)
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
                         if (snapshot.exists()) {
-                            String username = snapshot.child("username").getValue().toString();
-                            String profileImage = snapshot.child("profileImage").getValue().toString();
-                            binding.usernameTv.setText(username);
+                            String username = snapshot.child("username").getValue(String.class);
+                            String profileImage = snapshot.child("profileImage").getValue(String.class);
+                            if (username != null) {
+                                binding.usernameTv.setText(username);
+                            }
 
-                            if (!profileImage.isEmpty()) {
+                            if (profileImage != null && !profileImage.isEmpty()) {
                                 // Очищаем кеш Glide перед загрузкой нового изображения
                                 Glide.with(getContext())
                                         .load(profileImage)

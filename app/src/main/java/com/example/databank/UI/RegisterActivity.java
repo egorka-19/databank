@@ -34,10 +34,10 @@ public class RegisterActivity extends AppCompatActivity {
         setContentView(R.layout.activity_register);
         swipeButton = (ImageButton)findViewById(R.id.swipe_btn);
 
-        registerBtn = (ImageButton)findViewById(R.id.register_button);
+        registerBtn = (ImageButton)findViewById(R.id.login_button);
         usernameInput = (EditText)findViewById(R.id.register_username_input);
-        phoneInput = (EditText)findViewById(R.id.register_phone_input);
-        passwordInput = (EditText)findViewById(R.id.register_password_input);
+        phoneInput = (EditText)findViewById(R.id.login_phone_input);
+        passwordInput = (EditText)findViewById(R.id.login_password_input);
         loadingBar = new ProgressDialog(this);
 
         swipeButton = (ImageButton)findViewById(R.id.swipe_btn);

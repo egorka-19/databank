@@ -42,7 +42,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         CategoryModel category = categoryList.get(position);
         holder.categoryName.setText(category.getName());
-        
+
         // Устанавливаем фон в зависимости от выбранного элемента
         if (position == selectedPosition) {
             holder.itemView.setBackgroundResource(R.drawable.selected_category_background);
