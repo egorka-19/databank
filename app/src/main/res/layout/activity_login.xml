@@ -5,75 +5,18 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:backgroundTint="@color/color_main_BG"
-    tools:context=".UI.LoginActivity">
-
-    <ImageView
-        android:id="@+id/applogo"
-        android:layout_width="335dp"
-        android:layout_height="275dp"
-        android:contentDescription="@string/app_name"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:scaleType="centerCrop"
-        android:src="@drawable/logo_login_swipe" />
-
-    <ImageView
-        android:id="@+id/window_login"
-        android:layout_width="wrap_content"
-        android:layout_height="200dp"
-        android:contentDescription="@string/app_name"
-        android:layout_below="@id/swipe_btn"
-        android:layout_marginLeft="10dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="10dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/window_login" />
-
-    <EditText
-        android:id="@+id/login_phone_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/swipe_btn"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="50dp"
-        android:layout_marginRight="25dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/nunito"
-        android:hint="Номер телефона"
-        android:inputType="number"
-        android:padding="15dp"
-        android:textColor="@color/black"
-        android:textColorHint="#A4A4A4"
-        android:textSize="20sp"
-        android:textStyle="bold" />
-
-    <EditText
-        android:id="@+id/login_password_input"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/login_phone_input"
-        android:layout_marginLeft="25dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="25dp"
-        android:backgroundTint="@android:color/transparent"
-        android:fontFamily="@font/nunito"
-
-        android:hint="Пароль"
-        android:inputType="textPassword"
-        android:padding="18dp"
-        android:textColor="@color/black"
-        android:textColorHint="#A4A4A4"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+    android:background="@color/white"
+    tools:context=".UI.RegisterActivity">
 
     <LinearLayout
         android:id="@+id/linear_check"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_below="@+id/login_password_input"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginRight="10dp"
         android:contentDescription="@string/app_name"
-        android:layout_below="@id/login_password_input"
-        android:layout_marginTop="15dp"
         android:orientation="horizontal">
 
         <TextView
@@ -83,11 +26,11 @@
             android:layout_marginLeft="20dp"
             android:layout_weight="2"
             android:contentDescription="@string/app_name"
-            android:fontFamily="@font/nunito"
+            android:fontFamily="@font/sfuitextregular"
             android:singleLine="true"
             android:text="Забыли пароль?"
             android:textSize="16sp"
-            android:textStyle="italic|bold" />
+            android:textStyle="normal" />
 
         <com.rey.material.widget.CheckBox
             android:id="@+id/login_checkbox"
@@ -98,86 +41,109 @@
             android:layout_marginRight="17dp"
             android:layout_weight="2"
             android:contentDescription="@string/app_name"
-            android:fontFamily="@font/nunito"
+            android:fontFamily="@font/sfuitextregular"
             android:gravity="center_vertical"
             android:layoutDirection="rtl"
             android:singleLine="true"
             android:text="Запомнить меня"
             android:textAllCaps="false"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+            android:textSize="16sp" />
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/login_button"
-        android:layout_width="match_parent"
-        android:layout_height="60dp"
-        android:layout_below="@id/linear_check"
+    <ImageView
+        android:id="@+id/applogo"
+        android:layout_width="275dp"
+        android:layout_height="50dp"
+        android:layout_alignParentStart="false"
+        android:layout_alignParentTop="false"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="45dp"
         android:contentDescription="@string/app_name"
-        android:layout_marginLeft="20dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="@android:color/transparent"
-        android:padding="20dp"
-        android:scaleType="centerCrop"
-        android:src="@drawable/next_button" />
+        android:scaleType="centerInside"
+        android:src="@drawable/text_register" />
 
-    <TextView
-        android:id="@+id/admin_panel_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:layout_below="@id/or_iv"
-        android:layout_alignParentEnd="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="25dp"
-        android:fontFamily="@font/nunito"
-
-        android:text="Войти как администратор"
-        android:textColor="#656565"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/not_admin_panel_link"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:contentDescription="@string/app_name"
-        android:layout_below="@id/or_iv"
-        android:layout_alignParentEnd="false"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_marginRight="25dp"
-        android:fontFamily="@font/nunito"
-        android:visibility="invisible"
-        android:text="Войти как пользователь"
-        android:textColor="#656565"
-        android:textSize="18sp" />
 
     <ImageButton
         android:id="@+id/swipe_btn"
         android:layout_width="match_parent"
         android:layout_height="31dp"
-        android:contentDescription="@string/app_name"
         android:layout_below="@id/applogo"
         android:layout_centerHorizontal="true"
+        android:layout_marginTop="195dp"
+        android:layout_marginRight="50dp"
         android:backgroundTint="@android:color/transparent"
-        android:scaleType="centerCrop"
-        app:srcCompat="@drawable/swipe_login"
-        android:layout_marginRight="50dp"
-        android:layout_marginLeft="50dp"
-        android:layout_marginTop="15dp"/>
-
-    <ImageView
-        android:id="@+id/or_iv"
         android:contentDescription="@string/app_name"
+        android:scaleType="centerCrop"
+        app:srcCompat="@drawable/swipe_btn_log" />
+
+    <EditText
+        android:id="@+id/login_phone_input"
         android:layout_width="match_parent"
-        android:layout_height="15dp"
-        android:layout_below="@id/login_button"
-        android:layout_marginLeft="50dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/swipe_btn"
+        android:layout_marginLeft="25dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginRight="25dp"
+        android:background="@drawable/window_register"
+        android:backgroundTint="#F8F8F8"
+        android:fontFamily="@font/sfuitextregular"
+        android:hint="Номер карты"
+        android:inputType="number"
+        android:padding="15dp"
+        android:textColor="@color/black"
+        android:textColorHint="#A4A4A4"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <EditText
+        android:id="@+id/login_password_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/login_phone_input"
+
+        android:layout_marginLeft="25dp"
         android:layout_marginTop="10dp"
-        android:layout_marginRight="50dp"
-        android:scaleType="fitCenter"
-        app:srcCompat="@drawable/or_iv" />
+        android:layout_marginRight="25dp"
+        android:background="@drawable/window_register"
+        android:backgroundTint="#F8F8F8"
+        android:fontFamily="@font/sfuitextregular"
+
+        android:hint="Пароль"
+        android:inputType="textPassword"
+        android:padding="18dp"
+        android:textColor="@color/black"
+        android:textColorHint="#A4A4A4"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <ImageButton
+        android:id="@+id/login_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/scan_button"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="153dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:padding="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/btn_signin" />
+
+    <ImageButton
+        android:id="@+id/scan_button"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/linear_check"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="30dp"
+        android:layout_marginRight="20dp"
+        android:backgroundTint="@android:color/transparent"
+        android:contentDescription="@string/app_name"
+        android:padding="20dp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/scan_card" />
+
+
 </RelativeLayout>
