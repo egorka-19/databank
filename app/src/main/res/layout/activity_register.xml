@@ -63,6 +63,19 @@
         android:scaleType="centerInside"
         android:src="@drawable/text_register" />
 
+    <ImageView
+        android:id="@+id/bearlogo"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:layout_below="@id/applogo"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="false"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="20dp"
+        android:contentDescription="@string/app_name"
+        android:scaleType="centerInside"
+        android:src="@drawable/logo_bear" />
+
 
     <ImageButton
         android:id="@+id/swipe_btn"

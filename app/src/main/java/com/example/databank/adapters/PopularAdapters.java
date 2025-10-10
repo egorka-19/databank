@@ -66,9 +66,15 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
                     })
                     .into(holder.popImg);
 
-            // Set the text for name, rating, and description
+            // Set the text for name
             holder.name.setText(currentItem.getName());
-            holder.description.setText(currentItem.getDescription());
+            
+            // Set the text for cash
+            if (currentItem.getCash() != null && !currentItem.getCash().isEmpty()) {
+                holder.price.setText(currentItem.getCash());
+            } else {
+                holder.price.setText("Цена не указана");
+            }
 
             // Set click listener for item
             holder.itemView.setOnClickListener(v -> {
@@ -87,14 +93,13 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         ImageView popImg;
-        TextView name, raiting, description;
+        TextView name, price;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             popImg = itemView.findViewById(R.id.pop_img);
             name = itemView.findViewById(R.id.pop_name);
-
-            description = itemView.findViewById(R.id.item_description);
+            price = itemView.findViewById(R.id.price_text);
         }
     }
 }

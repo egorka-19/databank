@@ -45,7 +45,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
         // Set background and text color based on selection
         if (position == selectedPosition) {
-            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.orange));
+            holder.cardView.setCardBackgroundColor(context.getResources().getColor(R.color.indigo));
             holder.name.setTextColor(context.getResources().getColor(android.R.color.white));
         } else {
             holder.cardView.setCardBackgroundColor(context.getResources().getColor(android.R.color.white));

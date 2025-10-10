@@ -15,6 +15,7 @@ import androidx.core.view.WindowInsetsCompat;
 import com.example.databank.R;
 import com.example.databank.UI.LoginActivity;
 import com.example.databank.Prevalent.Prevalent;
+import com.example.databank.UI.Users.views.RoundedRevealView;
 
 import io.paperdb.Paper;
 
@@ -46,14 +47,22 @@ public class settings extends AppCompatActivity {
                     Paper.init(settings.this);
                     Paper.book().delete(Prevalent.UserPhoneKey);
                     Paper.book().delete(Prevalent.UserPasswordKey);
-                    // Опционально: очистить все записи
-                    // Paper.book().destroy();
 
-                    // Переходим на экран логина и очищаем back stack
-                    Intent intent = new Intent(settings.this, LoginActivity.class);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                    startActivity(intent);
-                    finish();
+                    // Запускаем анимацию заливки и по завершении уходим на Login
+                    RoundedRevealView reveal = findViewById(R.id.revealView);
+                    if (reveal != null) {
+                        reveal.startSequenceFromBottomRight(1500, () -> {
+                            Intent intent = new Intent(settings.this, LoginActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                            startActivity(intent);
+                            finish();
+                        });
+                    } else {
+                        Intent intent = new Intent(settings.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
             });
 

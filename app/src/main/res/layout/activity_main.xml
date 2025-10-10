@@ -24,6 +24,13 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <!-- Виджет для двухфазной анимации перехода (используется в коде как revealView) -->
+    <com.example.databank.UI.Users.views.RoundedRevealView
+        android:id="@+id/revealView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/bottom_buttons_container"
         android:layout_width="match_parent"
