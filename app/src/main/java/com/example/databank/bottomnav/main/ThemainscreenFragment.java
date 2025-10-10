@@ -98,14 +98,29 @@ public class ThemainscreenFragment extends Fragment {
         homeCatRec = view.findViewById(R.id.exp_rec);
         progressBar = view.findViewById(R.id.progressbar);
         phone = requireActivity().getIntent().getStringExtra("phone");
+        String userType = requireActivity().getIntent().getStringExtra("userType");
         
-        // Инициализация прогресс-бара накоплений
-        savingsProgressBar = view.findViewById(R.id.progress_bar);
-        progressText = view.findViewById(R.id.progress_text);
-
-        
-        // Загружаем данные о накоплениях пользователя
-        loadSavingsData();
+        // Инициализация/скрытие прогресс-бара накоплений для родителей
+        if ("parent".equals(userType)) {
+            View progressContainer = view.findViewById(R.id.progress_container);
+            if (progressContainer != null) {
+                progressContainer.setVisibility(View.GONE);
+            }
+            View createBtn = view.findViewById(R.id.create_task_btn);
+            if (createBtn != null) {
+                createBtn.setVisibility(View.VISIBLE);
+                createBtn.setOnClickListener(v -> {
+                    Intent i = new Intent(requireContext(), com.example.databank.UI.Users.CreateParentTaskActivity.class);
+                    i.putExtra("phone", phone);
+                    startActivity(i);
+                });
+            }
+        } else {
+            savingsProgressBar = view.findViewById(R.id.progress_bar);
+            progressText = view.findViewById(R.id.progress_text);
+            // Загружаем данные о накоплениях пользователя
+            loadSavingsData();
+        }
 
         progressBar.setVisibility(VISIBLE);
 
@@ -171,6 +186,8 @@ public class ThemainscreenFragment extends Fragment {
 
         return view;
     }
+
+    
 
     private void loadAllEvents() {
         db.collection("events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {

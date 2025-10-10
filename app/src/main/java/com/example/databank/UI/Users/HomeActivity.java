@@ -33,6 +33,7 @@ public class HomeActivity extends AppCompatActivity {
         System.out.println("home" + intent.getStringExtra("phone"));
 
         String phone = intent.getStringExtra("phone");
+        String userType = intent.getStringExtra("userType");
         new Intent(HomeActivity.this, product_card.class);
         intent.putExtra("phone", phone);
 

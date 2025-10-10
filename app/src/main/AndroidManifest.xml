@@ -80,6 +80,12 @@
             android:exported="false" />
 
         <activity
+            android:name=".UI.Users.CreateParentTaskActivity"
+            android:exported="false" />
+
+        
+
+        <activity
             android:name=".UI.Users.ParentTasksActivity"
             android:exported="false" />
 

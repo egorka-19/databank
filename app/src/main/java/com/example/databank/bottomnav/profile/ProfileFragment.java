@@ -138,9 +138,35 @@ public class ProfileFragment extends Fragment {
                             username = snapshot.child("username").getValue(String.class);
                             String profileImage = snapshot.child("profileImage").getValue(String.class);
                             userType = snapshot.child("userType").getValue(String.class);
+                            String phoneValue = snapshot.child("phone").getValue(String.class);
+                            Integer savings = snapshot.child("savings").getValue(Integer.class);
+                            Integer targetAmount = snapshot.child("targetAmount").getValue(Integer.class);
+                            String goalName = snapshot.child("goalName").getValue(String.class);
                             
                             if (username != null) {
                                 binding.usernameTv.setText(username);
+                            }
+
+                            // Телефон
+                            if (phoneValue != null) {
+                                binding.phoneTv.setText(phoneValue);
+                            }
+
+                            // Баланс
+                            if (savings != null) {
+                                binding.balanceTv.setText(String.valueOf(savings) + " ₽");
+                            }
+
+                            // Текущая цель
+                            if (goalName != null) {
+                                binding.currentGoalTv.setText(goalName);
+                            }
+
+                            // Прогресс цели
+                            if (savings != null && targetAmount != null && targetAmount > 0) {
+                                int percent = Math.min(100, (int) Math.round(savings * 100.0 / targetAmount));
+                                binding.goalProgressBar.setProgress(percent);
+                                binding.progressPercentage.setText(percent + "%");
                             }
 
                             if (profileImage != null && !profileImage.isEmpty()) {
@@ -220,9 +246,13 @@ public class ProfileFragment extends Fragment {
 
     private void setupUserSpecificFeatures() {
         if ("parent".equals(userType)) {
-            // Для родителей добавляем кнопку генерации QR-кода
+            // Скрыть кнопки целей и достижений
+            binding.goalsBtn.setVisibility(View.GONE);
+            binding.achievementsBtn.setVisibility(View.GONE);
+
+            // Для родителей: подключить ребенка (показываем QR код родителя)
             binding.qrCodeButton.setVisibility(View.VISIBLE);
-            binding.qrCodeButton.setText("Показать QR-код");
+            binding.qrCodeButton.setText("Подключить ребенка");
             binding.qrCodeButton.setOnClickListener(v -> showQRCode());
 
             // Показать кнопку задач ребёнка

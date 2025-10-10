@@ -137,12 +137,14 @@ public class LoginActivity extends AppCompatActivity {
                                     // Если цель уже установлена, переходим на главный экран
                                     Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                                     homeIntent.putExtra("phone", phone);
+                                    homeIntent.putExtra("userType", actualUserType);
                                     startActivity(homeIntent);
                                 }
                             } else {
                                 // Для родителей сразу переходим на главный экран
                                 Intent homeIntent = new Intent(LoginActivity.this, HomeActivity.class);
                                 homeIntent.putExtra("phone", phone);
+                                homeIntent.putExtra("userType", actualUserType);
                                 startActivity(homeIntent);
                             }
                         } else {
