@@ -52,6 +52,10 @@ dependencies {
     implementation 'com.google.firebase:firebase-messaging:24.0.2'
     implementation 'com.github.bumptech.glide:glide:4.16.0'
     implementation 'com.jjoe64:graphview:4.2.2'
+    // Pie chart for analytics
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.1.0'
+    // Networking for chat API
+    implementation 'com.squareup.okhttp3:okhttp:4.12.0'
     
     // QR Code dependencies
     implementation 'com.journeyapps:zxing-android-embedded:4.3.0'

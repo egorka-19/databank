@@ -80,6 +80,14 @@
             android:exported="false" />
 
         <activity
+            android:name=".UI.Users.FinancialAssistantActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".UI.Users.AchievementsActivity"
+            android:exported="false" />
+
+        <activity
             android:name=".UI.Users.ParentTasksActivity"
             android:exported="false" />
 

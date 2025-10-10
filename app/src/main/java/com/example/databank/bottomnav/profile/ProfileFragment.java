@@ -73,6 +73,16 @@ public class ProfileFragment extends Fragment {
         }
 
         loadUserInfo();
+        loadSavingsAndGoal();
+
+        // Открыть экран достижений
+        binding.achievementsBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(getContext(), com.example.databank.UI.Users.AchievementsActivity.class);
+                startActivity(i);
+            }
+        });
 
         binding.profileImageView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -218,15 +228,88 @@ public class ProfileFragment extends Fragment {
         }
     }
 
+    private void loadSavingsAndGoal() {
+        if (phone == null || phone.isEmpty()) return;
+        // Сумма накоплений
+        FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("savings")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Object v = snapshot.getValue();
+                        int savings = 0;
+                        if (v instanceof Long) savings = ((Long) v).intValue();
+                        else if (v instanceof Integer) savings = (Integer) v;
+                        binding.balanceTv.setText(savings + " ₽");
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
+                });
+
+        // Название цели (если хранится)
+        FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("goalName")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        String goalName = snapshot.getValue(String.class);
+                        if (goalName != null && !goalName.isEmpty()) {
+                            binding.currentGoalTv.setText(goalName);
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
+                });
+
+        // Целевая сумма и прогресс
+        FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("targetAmount")
+                .addValueEventListener(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        Object v = snapshot.getValue();
+                        int target = 0;
+                        if (v instanceof Long) target = ((Long) v).intValue();
+                        else if (v instanceof Integer) target = (Integer) v;
+                        final int targetFinal = target;
+
+                        FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("savings")
+                                .addListenerForSingleValueEvent(new ValueEventListener() {
+                                    @Override
+                                    public void onDataChange(@NonNull DataSnapshot sn) {
+                                        int savings = 0;
+                                        Object sv = sn.getValue();
+                                        if (sv instanceof Long) savings = ((Long) sv).intValue();
+                                        else if (sv instanceof Integer) savings = (Integer) sv;
+
+                                        if (targetFinal <= 0) {
+                                            binding.goalProgressBar.setProgress(0);
+                                            binding.progressPercentage.setText("0%");
+                                        } else {
+                                            int percent = (int) Math.round(savings * 100.0 / targetFinal);
+                                            if (percent > 100) percent = 100;
+                                            binding.goalProgressBar.setProgress(percent);
+                                            binding.progressPercentage.setText(percent + "%");
+                                        }
+                    }
+
+                                    @Override
+                                    public void onCancelled(@NonNull DatabaseError error) { }
+                                });
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) { }
+                });
+    }
     private void setupUserSpecificFeatures() {
         if ("parent".equals(userType)) {
-            // Для родителей добавляем кнопку генерации QR-кода
+            // Для родителей: показать QR собственного профиля и задачи ребёнка
             binding.qrCodeButton.setVisibility(View.VISIBLE);
-            binding.qrCodeButton.setText("Показать QR-код");
+            binding.qrCodeButton.setImageResource(R.drawable.but_child);
             binding.qrCodeButton.setOnClickListener(v -> showQRCode());
 
-            // Показать кнопку задач ребёнка
             binding.parentTasksButton.setVisibility(View.VISIBLE);
+            binding.parentTasksButton.setImageResource(R.drawable.but_child1);
             binding.parentTasksButton.setOnClickListener(v -> {
                 if (phone == null || phone.isEmpty()) return;
                 // childPhone хранится у родителя в Users/{parent}/childPhone
@@ -248,12 +331,36 @@ public class ProfileFragment extends Fragment {
                             public void onCancelled(@NonNull DatabaseError error) { }
                         });
             });
+            // Для родителей оставляем баланс видимым; цель/достижения можно скрыть при желании
+            binding.balanceContainer.setVisibility(View.VISIBLE);
+            // Скрываем только цель и достижения
+            binding.currentGoalLabel.setVisibility(View.GONE);
+            binding.currentGoalTv.setVisibility(View.GONE);
+            binding.goalProgressBar.setVisibility(View.GONE);
+            binding.progressPercentage.setVisibility(View.GONE);
+            binding.achievementsBtn.setVisibility(View.GONE);
         } else if ("child".equals(userType)) {
-            // Для детей добавляем кнопку сканирования QR-кода
+            // Для детей: подключиться к родителю через сканер QR
             binding.qrCodeButton.setVisibility(View.VISIBLE);
-            binding.qrCodeButton.setText("Подключиться к родителю");
+            binding.qrCodeButton.setImageResource(R.drawable.but_connect_parent);
             binding.qrCodeButton.setOnClickListener(v -> startQRScanner());
+
+            // Кнопку задач родителя не показываем
+            binding.parentTasksButton.setVisibility(View.GONE);
+            // Для детей оставляем цель/достижения видимыми
         }
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        binding.financialAssistantBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (getContext() == null) return;
+                startActivity(new Intent(getContext(), com.example.databank.UI.Users.FinancialAssistantActivity.class));
+            }
+        });
     }
 
     private void showQRCode() {

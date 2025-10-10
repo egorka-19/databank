@@ -3,7 +3,7 @@ package com.example.databank.UI.Users;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -70,15 +70,15 @@ public class ParentTasksAdapter extends RecyclerView.Adapter<ParentTasksAdapter.
 
     static class ViewHolder extends RecyclerView.ViewHolder {
         TextView taskTitle, taskReward, taskStatus;
-        Button approveBtn, rejectBtn;
+        LinearLayout approveBtn, rejectBtn;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
             taskTitle = itemView.findViewById(R.id.task_title);
             taskReward = itemView.findViewById(R.id.task_reward);
             taskStatus = itemView.findViewById(R.id.task_status);
-            approveBtn = itemView.findViewById(R.id.approve_btn);
-            rejectBtn = itemView.findViewById(R.id.reject_btn);
+            approveBtn = itemView.findViewById(R.id.approve_container);
+            rejectBtn = itemView.findViewById(R.id.reject_container);
         }
     }
 }
