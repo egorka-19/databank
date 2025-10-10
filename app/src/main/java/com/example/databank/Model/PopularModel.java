@@ -3,6 +3,7 @@ package com.example.databank.Model;
 import java.io.Serializable;
 
 public class PopularModel implements Serializable {
+    private String id;
     private String name;
     private String img_url;
     private String description;
@@ -28,6 +29,14 @@ public class PopularModel implements Serializable {
 
     public String getName() {
         return name;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
     public void setName(String name) {

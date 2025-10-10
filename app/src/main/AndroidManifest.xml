@@ -79,6 +79,10 @@
             android:name=".UI.Users.QRCodeDisplayActivity"
             android:exported="false" />
 
+        <activity
+            android:name=".UI.Users.ParentTasksActivity"
+            android:exported="false" />
+
         <service
             android:name=".MyFirebaseMessagingService"
             android:exported="false">

@@ -8,6 +8,7 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Button;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -160,20 +161,21 @@ public class product_card extends AppCompatActivity {
     private void uploadImage(){
         if (filePath != null) {
             FirebaseStorage.getInstance().getReference().child("Product Images/" + System.currentTimeMillis())
-                    .putFile(filePath).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    .putFile(filePath)
+                    .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                             FirebaseStorage.getInstance().getReference()
                                     .child(taskSnapshot.getMetadata().getPath())
                                     .getDownloadUrl()
                                     .addOnSuccessListener(uri -> {
-                                        // Create or update a task as pending_review for this child
                                         saveTaskToRealtimeDb(uri.toString());
-                                        // Immediately add reward to savings per requirement
-                                        addRewardToSavings(getCurrentReward());
-                                    });
+                                        Toast.makeText(product_card.this, "Фото отправлено на проверку", Toast.LENGTH_SHORT).show();
+                                    })
+                                    .addOnFailureListener(e -> Toast.makeText(product_card.this, "Ошибка получения URL: " + e.getMessage(), Toast.LENGTH_LONG).show());
                         }
-                    });
+                    })
+                    .addOnFailureListener(e -> Toast.makeText(product_card.this, "Ошибка загрузки: " + e.getMessage(), Toast.LENGTH_LONG).show());
         }
     }
 
@@ -209,6 +211,7 @@ public class product_card extends AppCompatActivity {
 
     private void saveTaskToRealtimeDb(String imageUrl) {
         if (phone == null || phone.isEmpty()) {
+            Toast.makeText(this, "Не найден номер телефона пользователя", Toast.LENGTH_LONG).show();
             return;
         }
         DatabaseReference tasksRef = FirebaseDatabase.getInstance().getReference()
@@ -224,13 +227,26 @@ public class product_card extends AppCompatActivity {
                 taskData.put("taskNumber", nextNumber);
                 taskData.put("status", "pending_review");
                 taskData.put("imageUrl", imageUrl);
+                if (popularModel != null) {
+                    taskData.put("title", popularModel.getName());
+                    taskData.put("category", "");
+                    if (popularModel.getCash() != null) taskData.put("reward", popularModel.getCash());
+                    if (popularModel.getId() != null) taskData.put("sourceId", popularModel.getId());
+                }
                 taskData.put("createdAt", new Date().getTime());
                 taskData.put("updatedAt", new Date().getTime());
-                newTaskRef.setValue(taskData);
+                newTaskRef.setValue(taskData, (error, ref) -> {
+                    if (error == null) {
+                        Toast.makeText(product_card.this, "Задача отправлена на проверку", Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(product_card.this, "Ошибка сохранения задачи: " + error.getMessage(), Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
+                Toast.makeText(product_card.this, "Ошибка обращения к БД: " + error.getMessage(), Toast.LENGTH_LONG).show();
             }
         });
     }

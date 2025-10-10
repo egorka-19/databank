@@ -173,25 +173,57 @@ public class ThemainscreenFragment extends Fragment {
     }
 
     private void loadAllEvents() {
-        db.collection("events")
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            popularModelList.clear();
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                PopularModel popularModel = document.toObject(PopularModel.class);
-                                popularModelList.add(popularModel);
+        db.collection("events").get().addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                if (!task.isSuccessful()) {
+                    System.out.println("Error" + task.getException());
+                    Toast.makeText(getActivity(), "Error" + task.getException(), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                // First read user's tasks to know which events to hide
+                FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("tasks")
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                java.util.HashSet<String> hiddenSourceIds = new java.util.HashSet<>();
+                                for (DataSnapshot child : snapshot.getChildren()) {
+                                    Object statusObj = child.child("status").getValue();
+                                    Object sourceIdObj = child.child("sourceId").getValue();
+                                    String status = statusObj == null ? null : String.valueOf(statusObj);
+                                    String sourceId = sourceIdObj == null ? null : String.valueOf(sourceIdObj);
+                                    if (sourceId != null && ("pending_review".equals(status) || "completed".equals(status))) {
+                                        hiddenSourceIds.add(sourceId);
+                                    }
+                                }
+
+                                popularModelList.clear();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    PopularModel popularModel = document.toObject(PopularModel.class);
+                                    popularModel.setId(document.getId());
+                                    if (!hiddenSourceIds.contains(popularModel.getId())) {
+                                        popularModelList.add(popularModel);
+                                    }
+                                }
+                                popularAdapters.notifyDataSetChanged();
+                                progressBar.setVisibility(View.GONE);
                             }
-                            popularAdapters.notifyDataSetChanged();
-                            progressBar.setVisibility(View.GONE);
-                        } else {
-                            System.out.println("Error" + task.getException());
-                            Toast.makeText(getActivity(), "Error" + task.getException(), Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) {
+                                popularModelList.clear();
+                                for (QueryDocumentSnapshot document : task.getResult()) {
+                                    PopularModel popularModel = document.toObject(PopularModel.class);
+                                    popularModel.setId(document.getId());
+                                    popularModelList.add(popularModel);
+                                }
+                                popularAdapters.notifyDataSetChanged();
+                                progressBar.setVisibility(View.GONE);
+                            }
+                        });
+            }
+        });
     }
 
     public void showAllItems() {

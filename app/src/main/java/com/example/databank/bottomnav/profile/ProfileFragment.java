@@ -224,6 +224,30 @@ public class ProfileFragment extends Fragment {
             binding.qrCodeButton.setVisibility(View.VISIBLE);
             binding.qrCodeButton.setText("Показать QR-код");
             binding.qrCodeButton.setOnClickListener(v -> showQRCode());
+
+            // Показать кнопку задач ребёнка
+            binding.parentTasksButton.setVisibility(View.VISIBLE);
+            binding.parentTasksButton.setOnClickListener(v -> {
+                if (phone == null || phone.isEmpty()) return;
+                // childPhone хранится у родителя в Users/{parent}/childPhone
+                FirebaseDatabase.getInstance().getReference().child("Users").child(phone)
+                        .addListenerForSingleValueEvent(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot snapshot) {
+                                String childPhone = snapshot.child("childPhone").getValue(String.class);
+                                if (childPhone != null && !childPhone.isEmpty()) {
+                                    Intent i = new Intent(getContext(), com.example.databank.UI.Users.ParentTasksActivity.class);
+                                    i.putExtra("childPhone", childPhone);
+                                    startActivity(i);
+                                } else {
+                                    Toast.makeText(getContext(), "Ребёнок не привязан", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError error) { }
+                        });
+            });
         } else if ("child".equals(userType)) {
             // Для детей добавляем кнопку сканирования QR-кода
             binding.qrCodeButton.setVisibility(View.VISIBLE);

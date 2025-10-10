@@ -2,6 +2,7 @@ package com.example.databank.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,6 +23,8 @@ import com.bumptech.glide.request.target.Target;
 import com.example.databank.R;
 import com.example.databank.Model.PopularModel;
 import com.example.databank.product_card;
+import com.example.databank.Prevalent.Prevalent;
+import io.paperdb.Paper;
 
 import java.util.List;
 
@@ -81,6 +84,23 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
                 Intent intent = new Intent(context, product_card.class);
                 // Assuming that PopularModel implements Serializable or Parcelable
                 intent.putExtra("detail", currentItem); // Use Serializable or Parcelable to pass the object
+                // Pass phone for saving tasks/savings
+                String phone = null;
+                try {
+                    if (context instanceof Activity) {
+                        phone = ((Activity) context).getIntent().getStringExtra("phone");
+                    }
+                } catch (Exception ignored) {}
+                if (phone == null || phone.isEmpty()) {
+                    try {
+                        Paper.init(context.getApplicationContext());
+                        Object storedPhone = Paper.book().read(Prevalent.UserPhoneKey);
+                        if (storedPhone instanceof String) phone = (String) storedPhone;
+                    } catch (Exception ignored) {}
+                }
+                if (phone != null && !phone.isEmpty()) {
+                    intent.putExtra("phone", phone);
+                }
                 context.startActivity(intent);
             });
         }
