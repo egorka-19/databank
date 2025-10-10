@@ -78,8 +78,8 @@ public class RegisterActivity extends AppCompatActivity {
         String password = passwordInput.getText().toString();
         String lastname = lastnameInput.getText().toString();
         String age = ageInput.getText().toString();
-        String savings = "0";
-        String targetAmount = "0";
+        Integer savings = 0;
+        Integer targetAmount = 0;
         String profileImage = "";
 
         if (TextUtils.isEmpty(username)){
@@ -107,7 +107,7 @@ public class RegisterActivity extends AppCompatActivity {
         }
     }
 
-    private void ValidatePhone(String username, String phone, String password, String profileImage, String age, String lastname, String savings, String targetAmount) {
+    private void ValidatePhone(String username, String phone, String password, String profileImage, String age, String lastname, Integer savings, Integer targetAmount) {
         final DatabaseReference RootRef;
         RootRef = FirebaseDatabase.getInstance().getReference();
         RootRef.addListenerForSingleValueEvent(new ValueEventListener() {

@@ -1,7 +1,8 @@
 package com.example.databank.Model;
 
 public class Users {
-    private String name, phone, password, username, lastname, age, savings, targetAmount, goalName, goalDescription, deadline, profileImage, userType, parentPhone, childPhone, qrCode;
+    private String name, phone, password, username, lastname, age, goalName, goalDescription, deadline, profileImage, userType, parentPhone, childPhone, qrCode;
+    private Integer savings, targetAmount;
     
     public Users(){
 
@@ -61,19 +62,19 @@ public class Users {
         this.age = age;
     }
 
-    public String getSavings() {
+    public Integer getSavings() {
         return savings;
     }
 
-    public void setSavings(String savings) {
+    public void setSavings(Integer savings) {
         this.savings = savings;
     }
 
-    public String getTargetAmount() {
+    public Integer getTargetAmount() {
         return targetAmount;
     }
 
-    public void setTargetAmount(String targetAmount) {
+    public void setTargetAmount(Integer targetAmount) {
         this.targetAmount = targetAmount;
     }
 

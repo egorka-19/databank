@@ -103,8 +103,8 @@ public class CreateGoalActivity extends AppCompatActivity {
         goalData.put("goalName", goalName);
         goalData.put("goalDescription", goalDescription);
         goalData.put("deadline", deadline);
-        goalData.put("targetAmount", String.valueOf(amount));
-        goalData.put("savings", "0"); // Начальные сбережения
+        goalData.put("targetAmount", amount);
+        goalData.put("savings", 0); // Начальные сбережения
 
         userRef.updateChildren(goalData).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override

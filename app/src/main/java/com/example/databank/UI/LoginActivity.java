@@ -127,8 +127,8 @@ public class LoginActivity extends AppCompatActivity {
                             
                             // Проверяем targetAmount только для детей
                             if ("child".equals(actualUserType)) {
-                                String targetAmount = usersData.getTargetAmount();
-                                if (targetAmount == null || targetAmount.equals("0")) {
+                                Integer targetAmount = usersData.getTargetAmount();
+                                if (targetAmount == null || targetAmount == 0) {
                                     // Если цель не установлена, переходим на экран создания цели
                                     Intent createGoalIntent = new Intent(LoginActivity.this, CreateGoalActivity.class);
                                     createGoalIntent.putExtra("phone", phone);
