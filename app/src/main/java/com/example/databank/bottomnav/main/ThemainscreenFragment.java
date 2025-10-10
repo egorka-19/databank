@@ -67,6 +67,7 @@ public class ThemainscreenFragment extends Fragment {
     // Элементы прогресс-бара
     private ProgressBar savingsProgressBar;
     private TextView progressText;
+    private TextView goalNameValue;
     
     // Данные для прогресса
     private static final int DEFAULT_TARGET_AMOUNT = 30000; // Цель по умолчанию - 30 000 рублей
@@ -97,6 +98,7 @@ public class ThemainscreenFragment extends Fragment {
         popularRec = view.findViewById(R.id.pop_rec);
         homeCatRec = view.findViewById(R.id.exp_rec);
         progressBar = view.findViewById(R.id.progressbar);
+        goalNameValue = view.findViewById(R.id.goal_name_value);
         phone = requireActivity().getIntent().getStringExtra("phone");
         String userType = requireActivity().getIntent().getStringExtra("userType");
         
@@ -120,6 +122,7 @@ public class ThemainscreenFragment extends Fragment {
             progressText = view.findViewById(R.id.progress_text);
             // Загружаем данные о накоплениях пользователя
             loadSavingsData();
+            loadGoalName();
         }
 
         progressBar.setVisibility(VISIBLE);
@@ -185,6 +188,23 @@ public class ThemainscreenFragment extends Fragment {
 
 
         return view;
+    }
+
+    private void loadGoalName() {
+        if (phone == null || phone.isEmpty() || goalNameValue == null) return;
+        com.google.firebase.database.FirebaseDatabase.getInstance().getReference()
+                .child("Users").child(phone).child("goalName")
+                .addValueEventListener(new com.google.firebase.database.ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull com.google.firebase.database.DataSnapshot snapshot) {
+                        String name = snapshot.getValue(String.class);
+                        if (name == null || name.trim().isEmpty()) name = "—";
+                        goalNameValue.setText(name);
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull com.google.firebase.database.DatabaseError error) { }
+                });
     }
 
     

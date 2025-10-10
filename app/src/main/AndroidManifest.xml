@@ -18,6 +18,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.Swipe_hatoms"
+        android:name="com.example.databank.App"
         tools:targetApi="31">
         <activity
             android:name=".UI.Users.Reviews_end_Activity"
@@ -73,6 +74,9 @@
             android:name=".UI.Users.CreateGoalActivity"
             android:exported="false" />
         <activity
+            android:name=".UI.Users.WithdrawActivity"
+            android:exported="false" />
+        <activity
             android:name=".UI.Users.QRScannerActivity"
             android:exported="false" />
         <activity
@@ -81,6 +85,10 @@
 
         <activity
             android:name=".UI.Users.CreateParentTaskActivity"
+            android:exported="false" />
+
+        <activity
+            android:name=".UI.Users.TopUpBalanceActivity"
             android:exported="false" />
 
         

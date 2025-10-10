@@ -22,7 +22,7 @@ public class TasksRepository {
         this.root = FirebaseDatabase.getInstance().getReference();
     }
 
-    public void assignTask(String childPhone, String title, String category, int reward) {
+    public void assignTask(String parentPhone, String childPhone, String title, String category, int reward) {
         DatabaseReference tasksRef = root.child("Users").child(childPhone).child("tasks");
         tasksRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -32,6 +32,7 @@ public class TasksRepository {
                 Map<String, Object> data = new HashMap<>();
                 data.put("id", newTaskRef.getKey());
                 data.put("taskNumber", nextNumber);
+                data.put("parentPhone", parentPhone);
                 data.put("childPhone", childPhone);
                 data.put("title", title);
                 data.put("category", category);
@@ -97,6 +98,7 @@ public class TasksRepository {
                 Object r = snapshot.child("reward").getValue();
                 if (r instanceof Long) reward = ((Long) r).intValue();
                 else if (r instanceof Integer) reward = (Integer) r;
+                String parentPhone = snapshot.child("parentPhone").getValue(String.class);
 
                 // Set status to completed
                 Map<String, Object> updates = new HashMap<>();
@@ -123,6 +125,29 @@ public class TasksRepository {
                     public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
                     }
                 });
+
+                // Atomically deduct from parent's balance if available
+                if (parentPhone != null && !parentPhone.isEmpty() && inc > 0) {
+                    DatabaseReference parentBalanceRef = root.child("Users").child(parentPhone).child("balance");
+                    parentBalanceRef.runTransaction(new Transaction.Handler() {
+                        @NonNull
+                        @Override
+                        public Transaction.Result doTransaction(@NonNull MutableData currentData) {
+                            Integer current = 0;
+                            Object value = currentData.getValue();
+                            if (value instanceof Long) current = ((Long) value).intValue();
+                            else if (value instanceof Integer) current = (Integer) value;
+                            int newValue = current - inc;
+                            if (newValue < 0) newValue = 0; // не уходим в минус
+                            currentData.setValue(newValue);
+                            return Transaction.success(currentData);
+                        }
+
+                        @Override
+                        public void onComplete(@Nullable DatabaseError error, boolean committed, @Nullable DataSnapshot currentData) {
+                        }
+                    });
+                }
             }
 
             @Override

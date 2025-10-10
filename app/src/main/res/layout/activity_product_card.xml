@@ -10,8 +10,9 @@
 
     <ImageView
         android:id="@+id/pro_card_img"
-        android:layout_width="483dp"
-        android:layout_height="392dp"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:padding="50dp"
         android:scaleType="centerCrop"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHeight_percent="0.4"
@@ -57,14 +58,14 @@
 
             </LinearLayout>
 
-            <TextView
-                android:id="@+id/price"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:textColor="@android:color/black"
-                android:textStyle="bold"
-                android:textSize="20sp" />
+                <TextView
+                    android:id="@+id/price"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:textColor="@android:color/black"
+                    android:textSize="40sp"
+                    android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/description"
@@ -74,86 +75,17 @@
                 android:textColor="@color/black"
                 android:textSize="20sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/age_icon" />
-
-                <TextView
-                    android:id="@+id/age"
+                <ImageButton
+                    android:id="@+id/back_btn"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:textColor="@android:color/black"
-                    android:textSize="16sp" />
+                    android:layout_height="70dp"
+                    android:layout_marginTop="250dp"
+                    android:background="@android:color/transparent"
+                    android:baselineAlignBottom="false"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/otpravit_btn" />
+
             </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/icon_date" />
-
-                <TextView
-                    android:id="@+id/date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:gravity="center_vertical"
-                android:orientation="horizontal">
-
-                <ImageView
-                    android:layout_width="48dp"
-                    android:layout_height="48dp"
-                    android:src="@drawable/icon_geo" />
-
-                <TextView
-                    android:id="@+id/place"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginStart="15dp"
-                    android:textColor="@color/black"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <ImageButton
-                android:id="@+id/back_btn"
-                android:layout_width="wrap_content"
-                android:layout_height="70dp"
-                android:layout_marginTop="16dp"
-                android:background="@android:color/transparent"
-                android:scaleType="fitCenter"
-                android:src="@drawable/otpravit_btn" />
-
-            <Button
-                android:id="@+id/upload_btn"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Отправить фото"
-                android:textAllCaps="false" />
-        </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

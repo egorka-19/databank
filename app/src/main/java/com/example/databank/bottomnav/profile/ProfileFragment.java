@@ -140,6 +140,7 @@ public class ProfileFragment extends Fragment {
                             userType = snapshot.child("userType").getValue(String.class);
                             String phoneValue = snapshot.child("phone").getValue(String.class);
                             Integer savings = snapshot.child("savings").getValue(Integer.class);
+                            Integer balance = snapshot.child("balance").getValue(Integer.class);
                             Integer targetAmount = snapshot.child("targetAmount").getValue(Integer.class);
                             String goalName = snapshot.child("goalName").getValue(String.class);
                             
@@ -152,9 +153,25 @@ public class ProfileFragment extends Fragment {
                                 binding.phoneTv.setText(phoneValue);
                             }
 
-                            // Баланс
-                            if (savings != null) {
-                                binding.balanceTv.setText(String.valueOf(savings) + " ₽");
+                            // Баланс/накопления: для родителя показываем balance, для ребёнка savings
+                            if ("parent".equals(userType)) {
+                                if (balance != null) {
+                                    binding.balanceTv.setText(String.valueOf(balance) + " ₽");
+                                } else if (savings != null) {
+                                    binding.balanceTv.setText(String.valueOf(savings) + " ₽");
+                                }
+                                // Клик по контейнеру баланса -> пополнение
+                                if (binding.balanceContainer != null) {
+                                    binding.balanceContainer.setOnClickListener(v -> {
+                                        android.content.Intent i = new android.content.Intent(getContext(), com.example.databank.UI.Users.TopUpBalanceActivity.class);
+                                        i.putExtra("phone", phone);
+                                        startActivity(i);
+                                    });
+                                }
+                            } else {
+                                if (savings != null) {
+                                    binding.balanceTv.setText(String.valueOf(savings) + " ₽");
+                                }
                             }
 
                             // Текущая цель

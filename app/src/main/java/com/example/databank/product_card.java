@@ -41,9 +41,8 @@ import io.paperdb.Paper;
 
 public class product_card extends AppCompatActivity {
     ImageView detailedImg;
-    TextView description, name, age, date, place, price;
+    TextView description, name, price;
     ImageButton backBtn;
-    Button uploadBtn;
     Uri filePath;
 
     ViewAllModel viewAllModel = null;
@@ -71,17 +70,13 @@ public class product_card extends AppCompatActivity {
         detailedImg = findViewById(R.id.pro_card_img);
         description = findViewById(R.id.description);
         name = findViewById(R.id.name);
-        age = findViewById(R.id.age);
-        date = findViewById(R.id.date);
-        place = findViewById(R.id.place);
         price = findViewById(R.id.price);
         backBtn = findViewById(R.id.back_btn);
-        uploadBtn = findViewById(R.id.upload_btn);
 
         // Set up back button
         backBtn.setOnClickListener(v -> finish());
 
-        uploadBtn.setOnClickListener(v -> selectImage());
+        detailedImg.setOnClickListener(v -> selectImage());
 
         // Get data from intent
         final Object object = getIntent().getSerializableExtra("detail");
@@ -109,9 +104,7 @@ public class product_card extends AppCompatActivity {
             .into(detailedImg);
         name.setText(viewAllModel.getName());
         description.setText(viewAllModel.getDescription());
-        age.setText(viewAllModel.getAge());
-        date.setText(viewAllModel.getData());
-        place.setText(viewAllModel.getPlace());
+        // The layout does not include age/date/place fields; omit setting them
     }
 
     private void loadPopularModelData() {
@@ -120,9 +113,7 @@ public class product_card extends AppCompatActivity {
             .into(detailedImg);
         name.setText(popularModel.getName());
         description.setText(popularModel.getDescription());
-        age.setText(popularModel.getAge());
-        date.setText(popularModel.getData());
-        place.setText(popularModel.getPlace());
+        // The layout does not include age/date/place fields; omit setting them
         if (popularModel.getCash() != null) {
             price.setText(String.valueOf(popularModel.getCash()));
         }
@@ -132,9 +123,7 @@ public class product_card extends AppCompatActivity {
         detailedImg.setImageResource(placeModel.getImageResourceId());
         name.setText(placeModel.getName());
         description.setText(placeModel.getDescription());
-        age.setText(placeModel.getAge());
-        date.setText(placeModel.getData());
-        place.setText(placeModel.getPlace());
+        // The layout does not include age/date/place fields; omit setting them
     }
 
     ActivityResultLauncher<Intent> pickImageActivityResultLauncher = registerForActivityResult(

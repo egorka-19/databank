@@ -63,7 +63,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <!-- Цена внизу -->
+        <!-- Цена внизу (единый блок с центрированным текстом) -->
         <TextView
             android:id="@+id/price_text"
             android:layout_width="wrap_content"
@@ -71,26 +71,15 @@
             android:layout_marginStart="17dp"
             android:layout_marginBottom="15dp"
             android:background="@drawable/back_price"
-            android:text=" +500р."
+            android:gravity="center"
+            android:paddingLeft="10dp"
+            android:paddingRight="10dp"
+            android:text="+500 руб."
             android:textColor="@color/green"
             android:textSize="16sp"
             android:textStyle="bold"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toEndOf="@id/pop_img" />
-
-        <TextView
-            android:id="@+id/price_text2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="50dp"
-            android:layout_marginBottom="15dp"
-            android:background="@drawable/back_price"
-            android:text="руб."
-            android:textColor="@color/green"
-            android:textSize="16sp"
-            android:textStyle="bold"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toEndOf="@id/pop_img"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </androidx.cardview.widget.CardView>

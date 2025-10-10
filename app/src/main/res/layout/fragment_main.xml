@@ -61,6 +61,23 @@
             app:layout_constraintTop_toTopOf="parent"
             tools:layout_editor_absoluteX="10dp" />
 
+        <!-- Значение названия цели -->
+        <TextView
+            android:id="@+id/goal_name_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/sfuitextmedium"
+            android:text="—"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintStart_toEndOf="@+id/todo"
+            app:layout_constraintTop_toTopOf="@+id/todo"
+            app:layout_constraintBottom_toBottomOf="@+id/todo"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginStart="8dp"
+            android:ellipsize="end"
+            android:maxLines="1" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleHorizontal"

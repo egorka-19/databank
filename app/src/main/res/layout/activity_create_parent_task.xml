@@ -6,29 +6,52 @@
     android:padding="16dp">
 
     <EditText
-        android:id="@+id/title_input"
+        android:id="@+id/name_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Название задачи"/>
+        android:hint="Название (name)"/>
 
     <EditText
-        android:id="@+id/category_input"
+        android:id="@+id/type_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Категория"/>
+        android:hint="Тип (type)"/>
 
     <EditText
-        android:id="@+id/reward_input"
+        android:id="@+id/cash_input"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Вознаграждение"
+        android:hint="Стоимость (cash)"
         android:inputType="number"/>
+
+    <Button
+        android:id="@+id/select_image_btn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Выбрать изображение из галереи"/>
+
+    <ImageView
+        android:id="@+id/image_preview"
+        android:layout_width="match_parent"
+        android:layout_height="180dp"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        android:contentDescription="Предпросмотр изображения"
+        android:background="#EEEEEE"/>
+
+    <EditText
+        android:id="@+id/description_input"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minLines="3"
+        android:gravity="top|start"
+        android:hint="Описание (description)"/>
 
     <Button
         android:id="@+id/create_btn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Создать задачу"/>
+        android:text="Сохранить в Firestore"/>
 
 </LinearLayout>
 

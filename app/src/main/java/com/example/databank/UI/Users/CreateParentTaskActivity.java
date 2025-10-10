@@ -26,9 +26,7 @@ public class CreateParentTaskActivity extends AppCompatActivity {
         setContentView(R.layout.activity_create_parent_task);
 
         parentPhone = getIntent().getStringExtra("phone");
-        titleEt = findViewById(R.id.title_input);
-        categoryEt = findViewById(R.id.category_input);
-        rewardEt = findViewById(R.id.reward_input);
+
         Button createBtn = findViewById(R.id.create_btn);
 
         createBtn.setOnClickListener(v -> {
@@ -61,7 +59,6 @@ public class CreateParentTaskActivity extends AppCompatActivity {
                                 Toast.makeText(CreateParentTaskActivity.this, "Ребёнок не привязан", Toast.LENGTH_LONG).show();
                                 return;
                             }
-                            new TasksRepository().assignTask(childPhone, fTitle, fCategory, fReward);
                             Toast.makeText(CreateParentTaskActivity.this, "Задача создана", Toast.LENGTH_SHORT).show();
                             finish();
                         }

@@ -52,7 +52,8 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
             PopularModel currentItem = popularModelList.get(currentPosition);
 
             // Glide image loading with error handling
-            Glide.with(context)
+            Context safeContext = holder.itemView.getContext();
+            Glide.with(safeContext)
                     .load(currentItem.getImg_url())
                     .error(R.drawable.iphone_pro) // Image to show in case of error
                     .listener(new RequestListener<Drawable>() {
@@ -72,28 +73,29 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
             // Set the text for name
             holder.name.setText(currentItem.getName());
             
-            // Set the text for cash
+            // Set the text for cash in format "+<int> руб."
             if (currentItem.getCash() != null) {
-                holder.price.setText(String.valueOf(currentItem.getCash()));
+                holder.price.setText("+" + currentItem.getCash() + " руб.");
             } else {
-                holder.price.setText("Цена не указана");
+                holder.price.setText("+0 руб.");
             }
 
             // Set click listener for item
             holder.itemView.setOnClickListener(v -> {
-                Intent intent = new Intent(context, product_card.class);
+                Context clickContext = v.getContext();
+                Intent intent = new Intent(clickContext, product_card.class);
                 // Assuming that PopularModel implements Serializable or Parcelable
                 intent.putExtra("detail", currentItem); // Use Serializable or Parcelable to pass the object
                 // Pass phone for saving tasks/savings
                 String phone = null;
                 try {
-                    if (context instanceof Activity) {
-                        phone = ((Activity) context).getIntent().getStringExtra("phone");
+                    if (clickContext instanceof Activity) {
+                        phone = ((Activity) clickContext).getIntent().getStringExtra("phone");
                     }
                 } catch (Exception ignored) {}
                 if (phone == null || phone.isEmpty()) {
                     try {
-                        Paper.init(context.getApplicationContext());
+                        Paper.init(clickContext.getApplicationContext());
                         Object storedPhone = Paper.book().read(Prevalent.UserPhoneKey);
                         if (storedPhone instanceof String) phone = (String) storedPhone;
                     } catch (Exception ignored) {}
@@ -101,7 +103,7 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
                 if (phone != null && !phone.isEmpty()) {
                     intent.putExtra("phone", phone);
                 }
-                context.startActivity(intent);
+                clickContext.startActivity(intent);
             });
         }
     }
