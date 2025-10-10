@@ -51,7 +51,7 @@
             android:backgroundTint="@android:color/transparent"
             android:text="Родитель"
             android:textAllCaps="false"
-            android:textColor="#152BCA"
+            android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -66,9 +66,9 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
             android:text="Ребёнок"
-            android:textSize="22sp"
             android:textAllCaps="false"
-            android:textColor="#152BCA"
+            android:textColor="@color/white"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
     </LinearLayout>

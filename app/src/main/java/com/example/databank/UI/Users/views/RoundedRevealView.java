@@ -10,7 +10,7 @@ import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
-
+import android.widget.Button;
 
 import androidx.annotation.Nullable;
 
@@ -27,7 +27,7 @@ public class RoundedRevealView extends View {
     private int startCorner; // 0=BL,1=BR
     private long holdMs = 1500L;
     private Runnable onSequenceComplete;
-    private View parentView; // Ссылка на родительский View для скрытия текста
+    private View parentView; // Ссылка на родительский View для изменения цвета текста
 
     public RoundedRevealView(Context context) {
         this(context, null);
@@ -67,6 +67,21 @@ public class RoundedRevealView extends View {
 
     private void startAnim() {
         setVisibility(VISIBLE);
+        
+        // Меняем цвет текста кнопок и скрываем противоположную кнопку
+        if (parentView != null) {
+            Button parentBtn = parentView.findViewById(R.id.button_parent);
+            Button childBtn = parentView.findViewById(R.id.button_child);
+            
+            if (startCorner == 0) { // bottom-left (Родитель)
+                if (parentBtn != null) parentBtn.setTextColor(0xFF5567E6);
+                if (childBtn != null) childBtn.setAlpha(0f); // Скрываем кнопку "Ребёнок"
+            } else { // bottom-right (Ребёнок)
+                if (childBtn != null) childBtn.setTextColor(0xFF5567E6);
+                if (parentBtn != null) parentBtn.setAlpha(0f); // Скрываем кнопку "Родитель"
+            }
+        }
+        
         ValueAnimator anim = ValueAnimator.ofFloat(0f, 1f);
         anim.setDuration(600);
         anim.addUpdateListener(a -> {
@@ -96,12 +111,29 @@ public class RoundedRevealView extends View {
     }
 
     private void startFillAnim() {
-        // Скрываем текст кнопок в начале второй фазы
+        // Возвращаем текст кнопок к белому цвету, но оставляем невыбранную кнопку невидимой
         if (parentView != null) {
-            // Ищем контейнер с кнопками по ID
-            View buttonsContainer = parentView.findViewById(R.id.bottom_buttons_container);
-            if (buttonsContainer != null) {
-                buttonsContainer.setAlpha(0f);
+            Button parentBtn = parentView.findViewById(R.id.button_parent);
+            Button childBtn = parentView.findViewById(R.id.button_child);
+            
+            if (startCorner == 0) { // bottom-left (Родитель был выбран)
+                if (parentBtn != null) {
+                    parentBtn.setTextColor(0xFFFFFFFF);
+                    parentBtn.setAlpha(1f); // Выбранная кнопка видна
+                }
+                if (childBtn != null) {
+                    childBtn.setTextColor(0xFFFFFFFF);
+                    childBtn.setAlpha(0f); // Невыбранная кнопка остается невидимой
+                }
+            } else { // bottom-right (Ребёнок был выбран)
+                if (childBtn != null) {
+                    childBtn.setTextColor(0xFFFFFFFF);
+                    childBtn.setAlpha(1f); // Выбранная кнопка видна
+                }
+                if (parentBtn != null) {
+                    parentBtn.setTextColor(0xFFFFFFFF);
+                    parentBtn.setAlpha(0f); // Невыбранная кнопка остается невидимой
+                }
             }
         }
         
@@ -137,7 +169,7 @@ public class RoundedRevealView extends View {
         float w = getWidth();
         float h = getHeight();
 
-        // Фаза 1: текущая анимация (локальный прямоугольник внизу экрана)
+        // Фаза 1: текущая анимация (локальный прямоугольник внизу экрана) - БЕЛЫЙ
         if (progress > 0f) {
             float maxWidth = Math.min(w, dp(getContext(), 200));
             float maxHeight = Math.min(h, dp(getContext(), 100));
@@ -176,7 +208,7 @@ public class RoundedRevealView extends View {
             canvas.drawPath(path, paint);
         }
 
-        // Фаза 2: заливка экрана по диагонали от выбранного нижнего угла к противоположному верхнему
+        // Фаза 2: заливка экрана по диагонали от выбранного нижнего угла к противоположному верхнему - БЕЛЫЙ
         if (fillProgress > 0f) {
             // Базовые размеры финального прямоугольника из фазы 1
             float baseMaxW = Math.min(w, dp(getContext(), 200));

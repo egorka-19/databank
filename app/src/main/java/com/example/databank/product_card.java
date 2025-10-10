@@ -38,7 +38,6 @@ public class product_card extends AppCompatActivity {
         date = findViewById(R.id.date);
         place = findViewById(R.id.place);
         backBtn = findViewById(R.id.back_btn);
-        mapsButton = findViewById(R.id.maps_button);
 
         // Set up back button
         backBtn.setOnClickListener(v -> finish());

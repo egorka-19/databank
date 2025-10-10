@@ -61,12 +61,12 @@ public class MainActivity extends AppCompatActivity {
                 // Передаем ссылку на родительский View для скрытия текста
                 reveal.setParentView(findViewById(android.R.id.content));
                 if (isParent) {
-                    reveal.startSequenceFromBottomLeft(1500, () -> {
+                    reveal.startSequenceFromBottomLeft(500, () -> {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName));
                         finish();
                     });
                 } else {
-                    reveal.startSequenceFromBottomRight(1500, () -> {
+                    reveal.startSequenceFromBottomRight(500, () -> {
                         startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName));
                         finish();
                     });
@@ -81,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
                 new Handler().postDelayed(() -> {
                     startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName));
                     finish();
-                }, 2100);
+                }, 1500);
             } else {
                 startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName));
                 finish();
