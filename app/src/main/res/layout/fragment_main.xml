@@ -14,20 +14,22 @@
         android:layout_height="50dp"
         android:layout_alignParentStart="false"
         android:layout_alignParentTop="false"
-        android:layout_marginStart="30dp"
+        android:layout_marginStart="20dp"
         android:layout_marginTop="45dp"
         android:contentDescription="@string/app_name"
-        android:scaleType="centerInside"
-        android:src="@drawable/text_register"
+        android:scaleType="fitStart"
+        android:src="@drawable/msk_logo"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <!-- Прогресс-бар для накоплений -->
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/progress_container"
-        android:layout_width="425dp"
+        android:layout_width="380dp"
         android:layout_height="100dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="25dp"
+        android:layout_marginEnd="20dp"
         android:background="@drawable/progress_background"
         android:padding="10dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -35,45 +37,44 @@
         app:layout_constraintTop_toBottomOf="@+id/applogo2">
 
         <!-- Фон прогресс-бара -->
+        <TextView
+            android:id="@+id/todo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/black"
+            android:fontFamily="@font/sfuitextmedium"
+            android:text="Текущая цель:"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="10dp" />
+
         <ProgressBar
             android:id="@+id/progress_bar"
             style="?android:attr/progressBarStyleHorizontal"
-            android:layout_width="0dp"
+            android:layout_width="300dp"
             android:layout_height="25dp"
             android:layout_marginStart="10dp"
-            android:layout_marginEnd="10dp"
+            android:layout_marginTop="10dp"
             android:max="100"
             android:progress="0"
             android:progressDrawable="@drawable/progress_bar_drawable"
-            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintTop_toBottomOf="@+id/todo" />
 
         <!-- Текст с процентами -->
         <TextView
             android:id="@+id/progress_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
             android:text="0%"
             android:textColor="@color/black"
             android:textSize="16sp"
             android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="@+id/progress_bar"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progress_bar" />
-
-        <!-- Текст с суммой -->
-        <TextView
-            android:id="@+id/progress_amount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="4dp"
-            android:textColor="@color/gray_fortext"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/progress_text" />
+            app:layout_constraintStart_toEndOf="@+id/progress_bar"
+            app:layout_constraintTop_toTopOf="@+id/progress_bar" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -82,6 +83,7 @@
         android:id="@+id/search_rec"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="40dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/progress_container" />
@@ -94,8 +96,9 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/exp_rec"
         android:layout_width="match_parent"
-        android:layout_height="45dp"
+        android:layout_height="53dp"
         android:layout_marginStart="10dp"
+        android:layout_marginTop="15dp"
         android:background="@android:color/transparent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"

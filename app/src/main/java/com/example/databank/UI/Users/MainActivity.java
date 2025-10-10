@@ -43,7 +43,8 @@ public class MainActivity extends AppCompatActivity {
         RoundedRevealView roundedOverlay = findViewById(R.id.rounded_overlay);
 
         View.OnClickListener selectRole = v -> {
-            String parentDbName = (v.getId() == R.id.button_parent) ? "Admins" : "Users";
+            boolean isParent = (v.getId() == R.id.button_parent);
+            String parentDbName = isParent ? "Admins" : "Users";
             Button btn = (Button) v;
 
             if (roundedOverlay != null) {
@@ -55,12 +56,36 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
 
-            new Handler().postDelayed(() -> {
-                Intent i = new Intent(MainActivity.this, LoginActivity.class);
-                i.putExtra("userType", parentDbName.equals("Admins") ? "parent" : "child");
-                startActivity(i);
+            RoundedRevealView reveal = findViewById(R.id.revealView);
+            if (reveal != null) {
+                // Передаем ссылку на родительский View для скрытия текста
+                reveal.setParentView(findViewById(android.R.id.content));
+                if (isParent) {
+                    reveal.startSequenceFromBottomLeft(500, () -> {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName).putExtra("userType", parentDbName.equals("Admins") ? "parent" : "child"));
+                        finish();
+                    });
+                } else {
+                    reveal.startSequenceFromBottomRight(500, () -> {
+                        startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName).putExtra("userType", parentDbName.equals("Admins") ? "parent" : "child"));
+                        finish();
+                    });
+                }
+            } else if (roundedOverlay != null) {
+                // Fallback: однофазная анимация в сторону выбранной кнопки
+                if (isParent) {
+                    roundedOverlay.revealFromBottomLeft();
+                } else {
+                    roundedOverlay.revealFromBottomRight();
+                }
+                new Handler().postDelayed(() -> {
+                    startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName));
+                    finish();
+                }, 1500);
+            } else {
+                startActivity(new Intent(MainActivity.this, LoginActivity.class).putExtra("parentDbName", parentDbName));
                 finish();
-            }, 2000);
+            }
         };
 
         if (parentBtn != null) parentBtn.setOnClickListener(selectRole);

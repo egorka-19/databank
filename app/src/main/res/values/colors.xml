@@ -23,8 +23,8 @@
     <color name="orange">#FFFF4F13</color>
     <color name="violet">#9000FF</color>
     <color name="fon">#F4F4F4</color>
-    
-    <!-- Цвета для QR-кода и системы одобрения целей -->
+    <color name="indigo">#152BCA</color>
+    <color name="green">#00A91F</color>
     <color name="success_color">#4CAF50</color>
     <color name="error_color">#F44336</color>
     <color name="background_color">#F0F7FA</color>

@@ -24,6 +24,13 @@
         android:layout_height="match_parent"
         android:visibility="gone" />
 
+    <!-- Виджет для двухфазной анимации перехода (используется в коде как revealView) -->
+    <com.example.databank.UI.Users.views.RoundedRevealView
+        android:id="@+id/revealView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone" />
+
     <LinearLayout
         android:id="@+id/bottom_buttons_container"
         android:layout_width="match_parent"
@@ -44,7 +51,7 @@
             android:backgroundTint="@android:color/transparent"
             android:text="Родитель"
             android:textAllCaps="false"
-            android:textColor="#152BCA"
+            android:textColor="@color/white"
             android:textSize="22sp"
             android:textStyle="bold" />
 
@@ -59,9 +66,9 @@
             android:layout_weight="1"
             android:backgroundTint="@android:color/transparent"
             android:text="Ребёнок"
-            android:textSize="22sp"
             android:textAllCaps="false"
-            android:textColor="#152BCA"
+            android:textColor="@color/white"
+            android:textSize="22sp"
             android:textStyle="bold" />
 
     </LinearLayout>

@@ -67,7 +67,6 @@ public class ThemainscreenFragment extends Fragment {
     // Элементы прогресс-бара
     private ProgressBar savingsProgressBar;
     private TextView progressText;
-    private TextView progressAmount;
     
     // Данные для прогресса
     private static final int DEFAULT_TARGET_AMOUNT = 30000; // Цель по умолчанию - 30 000 рублей
@@ -103,7 +102,7 @@ public class ThemainscreenFragment extends Fragment {
         // Инициализация прогресс-бара накоплений
         savingsProgressBar = view.findViewById(R.id.progress_bar);
         progressText = view.findViewById(R.id.progress_text);
-        progressAmount = view.findViewById(R.id.progress_amount);
+
         
         // Загружаем данные о накоплениях пользователя
         loadSavingsData();
@@ -332,9 +331,8 @@ public class ThemainscreenFragment extends Fragment {
         System.out.println("updateProgressBar called");
         System.out.println("savingsProgressBar: " + savingsProgressBar);
         System.out.println("progressText: " + progressText);
-        System.out.println("progressAmount: " + progressAmount);
         
-        if (savingsProgressBar == null || progressText == null || progressAmount == null) {
+        if (savingsProgressBar == null || progressText == null) {
             System.out.println("One of the UI elements is null, returning");
             return;
         }
@@ -356,11 +354,6 @@ public class ThemainscreenFragment extends Fragment {
         // Обновляем текст с процентами
         progressText.setText(percentage + "%");
 
-        // Обновляем текст с суммой
-        String currentAmountFormatted = String.format("%,d", currentAmount).replace(",", " ");
-        String targetAmountFormatted = String.format("%,d", targetAmount).replace(",", " ");
-        progressAmount.setText(currentAmountFormatted + " ₽ / " + targetAmountFormatted + " ₽");
-        
         System.out.println("Progress bar updated successfully");
     }
 
