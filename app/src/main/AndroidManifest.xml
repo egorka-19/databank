@@ -7,6 +7,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <application
         android:allowBackup="true"
@@ -70,6 +71,12 @@
         </activity>
         <activity
             android:name=".UI.Users.CreateGoalActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Users.QRScannerActivity"
+            android:exported="false" />
+        <activity
+            android:name=".UI.Users.QRCodeDisplayActivity"
             android:exported="false" />
 
         <service
