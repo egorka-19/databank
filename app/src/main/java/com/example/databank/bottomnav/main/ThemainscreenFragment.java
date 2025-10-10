@@ -227,7 +227,7 @@ public class ThemainscreenFragment extends Fragment {
             
             // Загружаем текущую сумму накоплений
             FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("savings")
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                    .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             System.out.println("Savings snapshot exists: " + snapshot.exists());
@@ -280,7 +280,7 @@ public class ThemainscreenFragment extends Fragment {
         // Загружаем цель накоплений из Firebase Database
         if (phone != null && !phone.isEmpty()) {
             FirebaseDatabase.getInstance().getReference().child("Users").child(phone).child("targetAmount")
-                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                    .addValueEventListener(new ValueEventListener() {
                         @Override
                         public void onDataChange(@NonNull DataSnapshot snapshot) {
                             System.out.println("Target snapshot exists: " + snapshot.exists());

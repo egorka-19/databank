@@ -70,8 +70,8 @@ public class PopularAdapters extends RecyclerView.Adapter<PopularAdapters.ViewHo
             holder.name.setText(currentItem.getName());
             
             // Set the text for cash
-            if (currentItem.getCash() != null && !currentItem.getCash().isEmpty()) {
-                holder.price.setText(currentItem.getCash());
+            if (currentItem.getCash() != null) {
+                holder.price.setText(String.valueOf(currentItem.getCash()));
             } else {
                 holder.price.setText("Цена не указана");
             }
